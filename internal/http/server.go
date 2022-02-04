@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"github.com/smhdhsn/food/internal/config"
+	"github.com/smhdhsn/food/util/cli"
 )
 
 // Server contains server's services.
@@ -48,6 +49,6 @@ func (s *Server) Listen(host string, port int) error {
 		AllowCredentials: true,
 	})
 
-	fmt.Printf("Starting server: <http://%s:%d>\n", host, port)
+	fmt.Printf("%sStarting server%s: <http://%s:%d>\n", cli.GREEN, cli.RESET, host, port)
 	return http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), c.Handler(s.router))
 }
