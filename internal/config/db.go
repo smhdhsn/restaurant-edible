@@ -6,5 +6,5 @@ type DBConf struct {
 	Port int    `yaml:"port"`
 	Name string `yaml:"name"`
 	User string `yaml:"user"`
-	Pass string `yaml:"password"`
+	Pass string `yaml:"pass"`
 }

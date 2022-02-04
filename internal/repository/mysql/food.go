@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"github.com/smhdhsn/food/internal/model"
 	"github.com/smhdhsn/food/internal/repository"
 	"gorm.io/gorm"
 )
@@ -15,6 +16,16 @@ func NewFoodRepo(db *gorm.DB) repository.FoodRepository {
 	return &FoodRepo{db}
 }
 
-func (r *FoodRepo) Find() {
+// GetAvailableMeals gets foods that their ingredients are available (not expired|finished).
+func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
+	result := make([]*model.Food, 0)
 
+	tx := r.db.
+		Joins("JOIN food_ingredients ON foods.id = food_ingredients.food_id").
+		Joins("JOIN ingredients ON food_ingredients.ingredient_id = ingredients.id").
+		Joins("JOIN stocks ON ingredients.id = stocks.ingredient_id").
+		Group("foods.id").
+		Find(&result)
+
+	return result, tx.Error
 }

@@ -3,7 +3,7 @@ server:
   port: 9000
 
 db:
-  host: "food_db"
+  host: "127.0.0.1"
   port: 3306
   name: "food"
   user: "food"

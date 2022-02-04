@@ -9,7 +9,7 @@ import (
 var MigrationModels = [...]interface{}{
 	&model.Food{},
 	&model.Ingredient{},
-	&model.Stockroom{},
+	&model.Stock{},
 }
 
 // InitMigrations migrates models to the database.

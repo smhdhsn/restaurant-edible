@@ -27,9 +27,8 @@ func main() {
 	}
 
 	foodRepo := mysql.NewFoodRepo(dbConn)
-	ingredientRepo := mysql.NewIngredientRepo(dbConn)
 
-	menuService := service.NewMenuService(foodRepo, ingredientRepo)
+	menuService := service.NewMenuService(foodRepo)
 
 	httpServer, err := http.New(menuService, nil, nil)
 	if err != nil {
