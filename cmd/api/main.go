@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/smhdhsn/food/internal/config"
 	"github.com/smhdhsn/food/internal/db"
+	"github.com/smhdhsn/food/internal/http"
 )
 
 // main is the main application entry.
@@ -24,5 +24,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(conf)
+	httpServer, err := http.New()
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	log.Fatal(httpServer.Listen(conf.Server.Host, conf.Server.Port))
 }
