@@ -6,6 +6,7 @@ import (
 	"github.com/smhdhsn/food/internal/config"
 	"github.com/smhdhsn/food/internal/db"
 	"github.com/smhdhsn/food/internal/http"
+	"github.com/smhdhsn/food/internal/service"
 )
 
 // main is the main application entry.
@@ -24,7 +25,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	httpServer, err := http.New()
+	menuService := service.NewMenuService()
+
+	httpServer, err := http.New(menuService)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
