@@ -1,0 +1,13 @@
+server: 
+  host: "127.0.0.1"
+  port: 9000
+
+db:
+  host: "food_db"
+  port: 3306
+  name: "food"
+  user: "food"
+  pass: "food"
+
+client_uri:
+  - "http://localhost:9001"
