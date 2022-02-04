@@ -13,17 +13,29 @@ import (
 
 // Server contains server's services.
 type Server struct {
-	menu   *service.MenuService
-	router *mux.Router
+	menu      *service.MenuService
+	order     *service.OrderService
+	stockroom *service.StockroomService
+	router    *mux.Router
 }
 
 // New creates a new http server.
-func New(menuService *service.MenuService) (*Server, error) {
+func New(
+	menuService *service.MenuService,
+	orderService *service.OrderService,
+	stockroomService *service.StockroomService,
+) (*Server, error) {
 	r := mux.NewRouter().StrictSlash(true)
+
+	orderHandler := NewOrderHandler()
 
 	menuHandler := NewMenuHandler(menuService)
 
 	apiGroup := r.PathPrefix("/api").Subrouter()
+	apiGroup.
+		Methods(http.MethodPost).
+		Path("/order").
+		HandlerFunc(orderHandler.SubmitOrder)
 	apiGroup.
 		Methods(http.MethodGet).
 		Path("/menu").
@@ -31,6 +43,8 @@ func New(menuService *service.MenuService) (*Server, error) {
 
 	return &Server{
 		menuService,
+		orderService,
+		stockroomService,
 		r,
 	}, nil
 }

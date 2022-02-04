@@ -6,6 +6,7 @@ import (
 	"github.com/smhdhsn/food/internal/config"
 	"github.com/smhdhsn/food/internal/db"
 	"github.com/smhdhsn/food/internal/http"
+	"github.com/smhdhsn/food/internal/repository/mysql"
 	"github.com/smhdhsn/food/internal/service"
 )
 
@@ -25,9 +26,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	menuService := service.NewMenuService()
+	foodRepo := mysql.NewFoodRepo(dbConn)
+	ingredientRepo := mysql.NewIngredientRepo(dbConn)
 
-	httpServer, err := http.New(menuService)
+	menuService := service.NewMenuService(foodRepo, ingredientRepo)
+
+	httpServer, err := http.New(menuService, nil, nil)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
