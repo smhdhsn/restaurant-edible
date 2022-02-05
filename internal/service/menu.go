@@ -7,14 +7,15 @@ import (
 
 // MenuService contains repositories that will be used within this service.
 type MenuService struct {
-	foodRepo repository.FoodRepository
+	fRepo repository.FoodRepository
 }
 
 // NewMenuService creates a menu service with it's dependencies.
-func NewMenuService(foodRepo repository.FoodRepository) *MenuService {
-	return &MenuService{foodRepo: foodRepo}
+func NewMenuService(fRepo repository.FoodRepository) *MenuService {
+	return &MenuService{fRepo: fRepo}
 }
 
+// GetFood is responsible for fetching available meals from database.
 func (s *MenuService) GetFoods() ([]*model.Food, error) {
-	return s.foodRepo.GetAvailableMeals()
+	return s.fRepo.GetAvailableMeals()
 }

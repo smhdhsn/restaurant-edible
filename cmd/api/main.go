@@ -26,11 +26,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	foodRepo := mysql.NewFoodRepo(dbConn)
+	fRepo := mysql.NewFoodRepo(dbConn)
+	sRepo := mysql.NewStockRepo(dbConn)
+	iRepo := mysql.NewIngredientRepo(dbConn)
 
-	menuService := service.NewMenuService(foodRepo)
+	mService := service.NewMenuService(fRepo)
+	oService := service.NewOrderService(fRepo, sRepo, iRepo)
 
-	httpServer, err := http.New(menuService, nil, nil)
+	httpServer, err := http.New(mService, oService)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
