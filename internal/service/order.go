@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/pkg/errors"
 	"github.com/smhdhsn/food/internal/repository"
 )
 
@@ -8,25 +9,25 @@ import (
 type OrderService struct {
 	fRepo repository.FoodRepository
 	sRepo repository.StockRepository
-	iRepo repository.IngredientRepository
 }
 
 // NewOrderService creates an order service with it's dependencies.
-func NewOrderService(fRepo repository.FoodRepository, sRepo repository.StockRepository, iRepo repository.IngredientRepository) *OrderService {
-	return &OrderService{fRepo: fRepo, sRepo: sRepo, iRepo: iRepo}
+func NewOrderService(fRepo repository.FoodRepository, sRepo repository.StockRepository) *OrderService {
+	return &OrderService{fRepo: fRepo, sRepo: sRepo}
 }
 
 // GetFood is responsible for fetching available meals from database.
 func (s *OrderService) OrderFood(foodID uint) (bool, error) {
 	foods, err := s.fRepo.GetAvailableMeals()
 	if err != nil {
-		return false, err
+		return false, errors.Wrap(err, "failed to get available foods")
 	}
 
 	var isAvailable bool
 	for _, f := range foods {
 		if f.ID == foodID {
 			isAvailable = true
+			break
 		}
 	}
 
@@ -34,17 +35,7 @@ func (s *OrderService) OrderFood(foodID uint) (bool, error) {
 		return false, repository.ErrNotAvailable
 	}
 
-	ingrds, err := s.iRepo.GetFoodIngredients(foodID)
-	if err != nil {
-		return false, err
-	}
-
-	ingrdIDs := make([]uint, 0)
-	for _, i := range ingrds {
-		ingrdIDs = append(ingrdIDs, i.ID)
-	}
-
-	err = s.sRepo.UseIngredients(ingrdIDs)
+	err = s.sRepo.UseIngredients(foodID)
 	if err != nil {
 		return false, repository.ErrNotAvailable
 	}

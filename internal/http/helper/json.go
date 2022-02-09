@@ -44,4 +44,12 @@ func (r *RespBody) Json(rw http.ResponseWriter, code int) {
 	rw.Header().Set("Content-Type", "application/json")
 	rw.WriteHeader(code)
 	rw.Write(res)
+
+	r.clear()
+}
+
+// clear is responsible for clearing RespBody struct for the next response.
+func (r *RespBody) clear() {
+	r.Message = nil
+	r.Error = nil
 }

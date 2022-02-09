@@ -5,6 +5,9 @@ import (
 	"gorm.io/gorm"
 )
 
+// decrBy holds the amount of items being used with every order submittion.
+const decrBy = 1
+
 // StockRepo contains repository's database connection.
 type StockRepo struct {
 	db *gorm.DB
@@ -15,27 +18,20 @@ func NewStockRepo(db *gorm.DB) repository.StockRepository {
 	return &StockRepo{db}
 }
 
-// UseIngredients decreases the amount of stock.
-func (s *StockRepo) UseIngredients(ingrdIDs []uint) error {
-	tx := s.db.Begin()
+// UseIngredients decreases the stock amount of ingredients related to a food.
+func (s *StockRepo) UseIngredients(foodID uint) error {
+	tx := s.db
 
-	for _, ingrdID := range ingrdIDs {
-		err := s.use(ingrdID)
-		if err != nil {
-			tx.Rollback()
-
-			return err
-		}
-	}
-
-	tx.Commit()
-
-	return nil
-}
-
-// use is responsible for decreasing the amount of an ingredient's stock.
-func (s *StockRepo) use(ingrdID uint) error {
-	tx := s.db.Exec("UPDATE stocks SET stock = stock - 1 WHERE stocks.id = ?", ingrdID)
+	tx.
+		Table("stocks").
+		Where(
+			"stocks.ingredient_id IN (?)",
+			tx.
+				Table("food_ingredients").
+				Select("food_ingredients.ingredient_id").
+				Where("food_ingredients.food_id = ?", foodID),
+		).
+		Update("stocks.stock", gorm.Expr("stocks.stock - ?", decrBy))
 
 	return tx.Error
 }
