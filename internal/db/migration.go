@@ -8,8 +8,8 @@ import (
 // MigrationModels holds the schema of the models to be migrated to database.
 var MigrationModels = [...]interface{}{
 	&model.Food{},
-	&model.Ingredient{},
-	&model.Stock{},
+	&model.Component{},
+	&model.Inventory{},
 }
 
 // InitMigrations migrates models to the database.

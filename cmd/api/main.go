@@ -27,10 +27,10 @@ func main() {
 	}
 
 	fRepo := mysql.NewFoodRepo(dbConn)
-	sRepo := mysql.NewStockRepo(dbConn)
+	iRepo := mysql.NewInventoryRepo(dbConn)
 
 	mService := service.NewMenuService(fRepo)
-	oService := service.NewOrderService(fRepo, sRepo)
+	oService := service.NewOrderService(fRepo, iRepo)
 
 	httpServer, err := http.New(mService, oService)
 	if err != nil {

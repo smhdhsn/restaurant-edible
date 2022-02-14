@@ -1,0 +1,38 @@
+{
+	"foods": [{
+		"title": "Ham and Cheese Toastie",
+		"components": [
+			"Ham",
+			"Cheese",
+			"Bread",
+			"Butter"
+		]
+	}, {
+		"title": "Fry-up",
+		"components": [
+			"Bacon",
+			"Eggs",
+			"Baked Beans",
+			"Mushrooms",
+			"Sausage",
+			"Bread"
+		]
+	}, {
+		"title": "Salad",
+		"components": [
+			"Lettuce",
+			"Tomato",
+			"Cucumber",
+			"Beetroot",
+			"Salad Dressing"
+		]
+	}, {
+		"title": "Hotdog",
+		"components": [
+			"Hotdog Bun",
+			"Sausage",
+			"Ketchup",
+			"Mustard"
+		]
+	}]
+}
