@@ -35,7 +35,7 @@ func (s *OrderService) OrderFood(foodID uint) (bool, error) {
 		return false, errors.New("requested order cannot be fulfilled because of the lack of components")
 	}
 
-	err = s.iRepo.UseComponents(foodID)
+	err = s.iRepo.UseStocks(foodID)
 	if err != nil {
 		return false, errors.Wrap(err, "failed to use components")
 	}

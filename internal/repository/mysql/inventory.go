@@ -1,11 +1,12 @@
 package mysql
 
 import (
+	"github.com/smhdhsn/food/internal/model"
 	"github.com/smhdhsn/food/internal/repository"
 	"gorm.io/gorm"
 )
 
-// decrBy holds the amount of items being used with every order submittion.
+// the amount of items being used with every order submittion.
 const decrBy = 1
 
 // InventoryRepo contains repository's database connection.
@@ -18,8 +19,8 @@ func NewInventoryRepo(db *gorm.DB) repository.InventoryRepository {
 	return &InventoryRepo{db}
 }
 
-// UseComponentsFor decreases food components' stock from inventory.
-func (s *InventoryRepo) UseComponents(foodID uint) error {
+// UseStocks decreases food components' stock from inventory.
+func (s *InventoryRepo) UseStocks(foodID uint) error {
 	return s.db.Transaction(func(tx *gorm.DB) error {
 		return tx.
 			Table("inventories").
@@ -32,4 +33,9 @@ func (s *InventoryRepo) UseComponents(foodID uint) error {
 			).
 			Update("inventories.stock", gorm.Expr("inventories.stock - ?", decrBy)).Error
 	})
+}
+
+// BuyStocks is responsible for buying food components for the inventory, if components' stock are finished or expired.
+func (s *InventoryRepo) BuyStocks(iList []*model.Inventory) error {
+	return s.db.Model(&model.Inventory{}).CreateInBatches(iList, 100).Error
 }
