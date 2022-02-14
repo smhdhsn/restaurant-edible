@@ -4,4 +4,8 @@ down:
 	docker rm -f food_db
 log:
 	docker logs -f food_db
-.PHONY: up down
+recipe:
+	go run cmd/command/*.go recipe -j ./sample/recipes.json
+buy:
+	go run cmd/command/*.go buy
+.PHONY: up down log recipe buy
