@@ -33,6 +33,10 @@ func (s *InventoryService) BuyComponents(req *BuyComponentsReq) error {
 		return errors.Wrap(err, "failed to get unavailable components")
 	}
 
+	if len(cList) == 0 {
+		return nil
+	}
+
 	iList := make([]*model.Inventory, 0)
 	for _, c := range cList {
 		iList = append(iList, &model.Inventory{

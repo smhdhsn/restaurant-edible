@@ -20,8 +20,8 @@ func NewInventoryRepo(db *gorm.DB) repository.InventoryRepository {
 }
 
 // UseStocks decreases food components' stock from inventory.
-func (s *InventoryRepo) UseStocks(foodID uint) error {
-	return s.db.Transaction(func(tx *gorm.DB) error {
+func (r *InventoryRepo) UseStocks(foodID uint) error {
+	return r.db.Transaction(func(tx *gorm.DB) error {
 		return tx.
 			Table("inventories").
 			Where(
@@ -36,6 +36,6 @@ func (s *InventoryRepo) UseStocks(foodID uint) error {
 }
 
 // BuyStocks is responsible for buying food components for the inventory, if components' stock are finished or expired.
-func (s *InventoryRepo) BuyStocks(iList []*model.Inventory) error {
-	return s.db.Model(&model.Inventory{}).CreateInBatches(iList, 100).Error
+func (r *InventoryRepo) BuyStocks(iList []*model.Inventory) error {
+	return r.db.Model(&model.Inventory{}).CreateInBatches(iList, 100).Error
 }

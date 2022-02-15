@@ -48,7 +48,7 @@ func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
 }
 
 // BatchInsert is responsible for storing a chunk of data inside database.
-func (r *FoodRepo) BatchInert(fList []*model.Food) error {
+func (r *FoodRepo) BatchInsert(fList []*model.Food) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
 		for _, f := range fList {
 			for _, c := range f.Components {

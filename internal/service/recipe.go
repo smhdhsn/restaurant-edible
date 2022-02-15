@@ -9,7 +9,6 @@ import (
 // RecipeService contains repositories that will be used within this service.
 type RecipeService struct {
 	fRepo repository.FoodRepository
-	cRepo repository.ComponentRepository
 }
 
 // RecipeSchema holds schema for recipe JSON.
@@ -21,8 +20,8 @@ type RecipeSchema struct {
 }
 
 // NewRecipeService creates a recipe service with it's dependencies.
-func NewRecipeService(fRepo repository.FoodRepository, cRepo repository.ComponentRepository) *RecipeService {
-	return &RecipeService{fRepo: fRepo, cRepo: cRepo}
+func NewRecipeService(fRepo repository.FoodRepository) *RecipeService {
+	return &RecipeService{fRepo: fRepo}
 }
 
 // CreateRecipe stores couple of sample recipes inside database.
@@ -37,7 +36,7 @@ func (s *RecipeService) CreateRecipe(recipe *RecipeSchema) (err error) {
 		fList = append(fList, &model.Food{Title: f.Title, Components: cList})
 	}
 
-	err = s.fRepo.BatchInert(fList)
+	err = s.fRepo.BatchInsert(fList)
 	if err != nil {
 		return errors.Wrap(err, "failed to batch insert foods")
 	}

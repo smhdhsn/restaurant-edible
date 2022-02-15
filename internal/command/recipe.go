@@ -46,9 +46,8 @@ func seedRun(cmd *cobra.Command, args []string) {
 	}
 
 	fRepo := mysql.NewFoodRepo(dbConn)
-	cRepo := mysql.NewComponentRepo(dbConn)
 
-	rService := service.NewRecipeService(fRepo, cRepo)
+	rService := service.NewRecipeService(fRepo)
 
 	j, err := cmd.Flags().GetString("json")
 	if err != nil {

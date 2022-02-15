@@ -8,4 +8,6 @@ recipe:
 	go run cmd/command/*.go recipe -j ./sample/recipes.json
 buy:
 	go run cmd/command/*.go buy
-.PHONY: up down log recipe buy
+test:
+	go test ./...
+.PHONY: up down log recipe buy test
