@@ -25,5 +25,5 @@ func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
 func (r *FoodRepo) BatchInsert(fList []*model.Food) error {
 	args := r.Mock.Called(fList)
 
-	return args.Error(1)
+	return args.Error(0)
 }

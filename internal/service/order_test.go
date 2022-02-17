@@ -15,12 +15,12 @@ var (
 
 func TestOrderFood(t *testing.T) {
 	// Arrange
-	f := model.Food{}
+	f := new(model.Food)
 	f.ID = randFoodID
 	f.Title = randTitle
 
 	fRepoMock := new(mock.FoodRepo)
-	fRepoMock.On("GetAvailableMeals").Return([]*model.Food{&f}, nil)
+	fRepoMock.On("GetAvailableMeals").Return([]*model.Food{f}, nil)
 
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("UseStocks", randFoodID).Return(nil)
