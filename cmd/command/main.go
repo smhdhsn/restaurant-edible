@@ -12,5 +12,5 @@ var rootCMD = &cobra.Command{
 
 // main is the main application entry.
 func main() {
-	rootCMD.Execute()
+	cobra.CheckErr(rootCMD.Execute())
 }
