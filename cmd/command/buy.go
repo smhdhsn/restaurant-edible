@@ -1,4 +1,4 @@
-package command
+package main
 
 import (
 	"log"
@@ -21,7 +21,42 @@ var (
 var buyCMD = &cobra.Command{
 	Use:   "buy",
 	Short: "Stores new food components inside database if their components' stock are finished or expired.",
-	Run:   buyRun,
+	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := config.LoadConf()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		dbConn, err := db.Connect(conf.DB)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if err := db.InitMigrations(dbConn); err != nil {
+			log.Fatal(err)
+		}
+
+		iRepo := mysql.NewInventoryRepo(dbConn)
+		cRepo := mysql.NewComponentRepo(dbConn)
+
+		iService := service.NewInventoryService(iRepo, cRepo)
+
+		a, err := cmd.Flags().GetUint("amount")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		req := service.BuyComponentsReq{
+			StockAmount: a,
+			BestBefore:  bestBefore,
+			ExpiresAt:   expiresAt,
+		}
+
+		err = iService.BuyComponents(&req)
+		if err != nil {
+			log.Fatal(err)
+		}
+	},
 }
 
 // init function will be executed when this package is called.
@@ -29,42 +64,4 @@ func init() {
 	rootCMD.AddCommand(buyCMD)
 
 	buyCMD.Flags().UintP("amount", "a", amount, "The amount of stocks added to inventory after each buy.")
-}
-
-// buyRun is responsible for running the script.
-func buyRun(cmd *cobra.Command, args []string) {
-	conf, err := config.LoadConf()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dbConn, err := db.Connect(conf.DB)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err := db.InitMigrations(dbConn); err != nil {
-		log.Fatal(err)
-	}
-
-	iRepo := mysql.NewInventoryRepo(dbConn)
-	cRepo := mysql.NewComponentRepo(dbConn)
-
-	iService := service.NewInventoryService(iRepo, cRepo)
-
-	a, err := cmd.Flags().GetUint("amount")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	req := service.BuyComponentsReq{
-		StockAmount: a,
-		BestBefore:  bestBefore,
-		ExpiresAt:   expiresAt,
-	}
-
-	err = iService.BuyComponents(&req)
-	if err != nil {
-		log.Fatal(err)
-	}
 }

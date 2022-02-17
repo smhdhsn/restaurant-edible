@@ -1,4 +1,4 @@
-package command
+package main
 
 import (
 	"encoding/json"
@@ -27,7 +27,40 @@ type RecipeFileSchema struct {
 var recipeCMD = &cobra.Command{
 	Use:   "recipe",
 	Short: "Stores sample recipes inside database.",
-	Run:   seedRun,
+	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := config.LoadConf()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		dbConn, err := db.Connect(conf.DB)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if err := db.InitMigrations(dbConn); err != nil {
+			log.Fatal(err)
+		}
+
+		fRepo := mysql.NewFoodRepo(dbConn)
+
+		rService := service.NewRecipeService(fRepo)
+
+		j, err := cmd.Flags().GetString("json")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		data, err := getFromFile(j)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = rService.CreateRecipe(data)
+		if err != nil {
+			log.Fatal(err)
+		}
+	},
 }
 
 // init function will be executed when this package is called.
@@ -36,42 +69,6 @@ func init() {
 
 	recipeCMD.Flags().StringP("json", "j", "", "Path to recipe JSON.")
 	recipeCMD.MarkFlagRequired("json")
-}
-
-// seedRun is responsible for running the script.
-func seedRun(cmd *cobra.Command, args []string) {
-	conf, err := config.LoadConf()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	dbConn, err := db.Connect(conf.DB)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if err := db.InitMigrations(dbConn); err != nil {
-		log.Fatal(err)
-	}
-
-	fRepo := mysql.NewFoodRepo(dbConn)
-
-	rService := service.NewRecipeService(fRepo)
-
-	j, err := cmd.Flags().GetString("json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	data, err := getFromFile(j)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = rService.CreateRecipe(data)
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 // getFromFile is responsible for getting recipe schema from JSON file.
