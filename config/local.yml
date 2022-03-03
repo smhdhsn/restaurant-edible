@@ -1,9 +1,9 @@
 server: 
-  host: "127.0.0.1"
+  host: ""
   port: 9000
 
 db:
-  host: "127.0.0.1"
+  host: "food_db"
   port: 3306
   name: "food"
   user: "food"

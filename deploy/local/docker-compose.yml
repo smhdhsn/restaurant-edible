@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mysql:8
+    container_name: food_db
+    networks:
+      - food
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+      MYSQL_USER: food
+      MYSQL_PASSWORD: food
+      MYSQL_DATABASE: food
+    ports:
+      - 3306:3306
+    volumes:
+      - food:/var/lib/mysql
+    restart: on-failure
+
+  app:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+    container_name: food_app
+    environment:
+      APP_ENV: $ENV
+    ports:
+      - 9000:9000
+    networks:
+      - food
+    depends_on:
+      - db
+    restart: on-failure
+    command: '/app/api'
+
+networks:
+  food:
+    name: food
+
+volumes:
+  food:
+    name: food

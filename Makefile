@@ -1,13 +1,20 @@
+BIN_DIR ?= bin
+
 up:
-	docker run -p 3306:3306 -d --name food_db -e MYSQL_USER=food -e MYSQL_PASSWORD=food -e MYSQL_DATABASE=food -e MYSQL_RANDOM_ROOT_PASSWORD=true mysql
-down:
-	docker rm -f food_db
-log:
-	docker logs -f food_db
-recipe:
-	go run cmd/command/*.go recipe -j ./sample/recipes.json
-buy:
-	go run cmd/command/*.go buy
-test:
-	go test ./...
-.PHONY: up down log recipe buy test
+	./scripts/docker_up.sh $(ENV)
+.PHONY: up
+
+shell:
+	docker exec -it food_app sh
+.PHONY: shell
+
+api:
+	go build -o $(BIN_DIR)/ ./cmd/api
+.PHONY: api
+
+command:
+	go build -o $(BIN_DIR)/ ./cmd/command
+.PHONY: command
+
+build_all: api command
+.PHONY: build_all
