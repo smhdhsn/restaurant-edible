@@ -2,24 +2,17 @@ package service
 
 import (
 	"testing"
-	"time"
 
 	"github.com/smhdhsn/food/internal/model"
+	"github.com/smhdhsn/food/internal/repository"
 	"github.com/smhdhsn/food/internal/repository/mock"
 	"github.com/stretchr/testify/assert"
-)
-
-// Random data for testing.
-var (
-	randAmount     = uint(5)
-	randBestBefore = time.Now().AddDate(0, 3, 0)
-	randExpiresAt  = time.Now().AddDate(0, 5, 0)
 )
 
 func TestBuyComponents(t *testing.T) {
 	// Arrange
 	c := model.Component{
-		Title: "randomTitle",
+		Title: randStr,
 	}
 
 	cRepoMock := new(mock.ComponentRepo)
@@ -27,21 +20,41 @@ func TestBuyComponents(t *testing.T) {
 
 	i := model.Inventory{
 		ComponentID: c.ID,
-		Stock:       randAmount,
-		BestBefore:  randBestBefore,
-		ExpiresAt:   randExpiresAt,
+		Stock:       randUINT,
+		BestBefore:  randDate,
+		ExpiresAt:   randDate,
 	}
 	iRepoMock := new(mock.InventoryRepo)
-	iRepoMock.On("BuyStocks", []*model.Inventory{&i}).Return(nil)
+	iRepoMock.On("Buy", []*model.Inventory{&i}).Return(nil)
 
 	sut := NewInventoryService(iRepoMock, cRepoMock)
 
 	// Act
 	err := sut.BuyComponents(&BuyComponentsReq{
-		StockAmount: randAmount,
-		BestBefore:  randBestBefore,
-		ExpiresAt:   randExpiresAt,
+		StockAmount: randUINT,
+		BestBefore:  randDate,
+		ExpiresAt:   randDate,
 	})
+
+	// Assert
+	assert.NoError(t, err)
+}
+
+func TestRecycle(t *testing.T) {
+	// Arrange
+	req := repository.RecycleReq{
+		Finished: randBool,
+		Expired:  randBool,
+		Staled:   randBool,
+	}
+
+	iRepoMock := new(mock.InventoryRepo)
+	iRepoMock.On("Clean", req).Return(nil)
+
+	sut := NewInventoryService(iRepoMock, nil)
+
+	// Act
+	err := sut.Recycle(req)
 
 	// Assert
 	assert.NoError(t, err)

@@ -23,23 +23,19 @@ func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
 	result := make([]*model.Food, 0)
 
 	tx := r.db.
-		Table("foods").
+		Table("foods AS f").
 		Where(
-			"foods.id NOT IN (?)",
+			"f.id NOT IN (?)",
 			r.db.
-				Table("food_components").
-				Select("food_components.food_id").
+				Table("food_components AS fc").
+				Select("fc.food_id").
 				Where(
-					"food_components.component_id NOT IN (?)",
-					r.db.Table("inventories").Select("inventories.component_id"),
-				).
-				Or(
-					"food_components.component_id IN (?)",
+					"fc.component_id NOT IN (?)",
 					r.db.
-						Table("inventories").
-						Select("inventories.component_id").
-						Where("inventories.expires_at < ?", time.Now()).
-						Or("inventories.stock = ?", 0),
+						Table("inventories AS i").
+						Select("i.component_id").
+						Where("i.expires_at > ?", time.Now()).
+						Where("i.stock != 0"),
 				),
 		).
 		Find(&result)

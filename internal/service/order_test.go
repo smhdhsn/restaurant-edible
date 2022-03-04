@@ -8,27 +8,22 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Random data for testing.
-var (
-	randFoodID = uint(1)
-)
-
 func TestOrderFood(t *testing.T) {
 	// Arrange
 	f := new(model.Food)
-	f.ID = randFoodID
-	f.Title = randTitle
+	f.ID = randUINT
+	f.Title = randStr
 
 	fRepoMock := new(mock.FoodRepo)
 	fRepoMock.On("GetAvailableMeals").Return([]*model.Food{f}, nil)
 
 	iRepoMock := new(mock.InventoryRepo)
-	iRepoMock.On("UseStocks", randFoodID).Return(nil)
+	iRepoMock.On("Use", randUINT).Return(nil)
 
 	sut := NewOrderService(fRepoMock, iRepoMock)
 
 	// Act
-	status, err := sut.OrderFood(randFoodID)
+	status, err := sut.OrderFood(randUINT)
 
 	// Assert
 	assert.NoError(t, err)

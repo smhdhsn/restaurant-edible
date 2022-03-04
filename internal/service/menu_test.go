@@ -8,15 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Random data for testing.
-var (
-	randTitle = "randomTitle"
-)
-
 func TestGetFoods(t *testing.T) {
 	// Arrange
 	f := model.Food{
-		Title: randTitle,
+		Title: randStr,
 	}
 	fRepoMock := new(mock.FoodRepo)
 	fRepoMock.On("GetAvailableMeals").Return([]*model.Food{&f}, nil)

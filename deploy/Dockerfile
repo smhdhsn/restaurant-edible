@@ -16,10 +16,8 @@ RUN make build_all BIN_DIR=/build
 # Building container to run binary.
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y --no-install-recommends
+COPY --from=binary /build /app
 
 WORKDIR /app
-
-COPY --from=binary /build/ /app/
 
 EXPOSE 9000

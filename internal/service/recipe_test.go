@@ -12,7 +12,7 @@ func TestCreateRecipe(t *testing.T) {
 	// Arrange
 	fList := make([]*model.Food, 0)
 	fList = append(fList, &model.Food{
-		Title: randTitle,
+		Title: randStr,
 	})
 	fRepoMock := new(mock.FoodRepo)
 	fRepoMock.On("BatchInsert", fList).Return(nil)

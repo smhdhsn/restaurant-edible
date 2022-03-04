@@ -24,14 +24,20 @@ func (r *ComponentRepo) GetUnavailable() ([]*model.Component, error) {
 	result := make([]*model.Component, 0)
 
 	tx := r.db.
-		Table("components").
+		Table("components AS c").
 		Where(
-			"components.id IN (?)",
-			r.db.Table("inventories").Select("inventories.component_id").Where("inventories.stock = ?", 0).Or("inventories.expires_at < ?", time.Now()),
+			"c.id IN (?)",
+			r.db.
+				Table("inventories AS i").
+				Select("i.component_id").
+				Where("i.stock = ?", 0).
+				Or("i.expires_at < ?", time.Now()),
 		).
 		Or(
-			"components.id NOT IN (?)",
-			r.db.Table("inventories").Select("inventories.component_id"),
+			"c.id NOT IN (?)",
+			r.db.
+				Table("inventories AS i").
+				Select("i.component_id"),
 		).
 		Find(&result)
 

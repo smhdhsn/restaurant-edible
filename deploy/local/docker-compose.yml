@@ -18,7 +18,7 @@ services:
   app:
     build:
       context: ../../
-      dockerfile: Dockerfile
+      dockerfile: deploy/Dockerfile
     container_name: food_app
     environment:
       APP_ENV: $ENV
@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     restart: on-failure
-    command: '/app/api'
+    command: "/app/api"
 
 networks:
   food:

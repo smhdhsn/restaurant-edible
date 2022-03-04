@@ -2,6 +2,7 @@ package mock
 
 import (
 	"github.com/smhdhsn/food/internal/model"
+	"github.com/smhdhsn/food/internal/repository"
 	"github.com/stretchr/testify/mock"
 )
 
@@ -10,16 +11,23 @@ type InventoryRepo struct {
 	mock.Mock
 }
 
-// UseStocks is a mocked method in mocked inventory repository.
-func (r *InventoryRepo) UseStocks(foodID uint) error {
+// Use is a mocked method in mocked inventory repository.
+func (r *InventoryRepo) Use(foodID uint) error {
 	args := r.Mock.Called(foodID)
 
 	return args.Error(0)
 }
 
-// BuyStocks is a mocked method in mocked inventory repository.
-func (r *InventoryRepo) BuyStocks(iList []*model.Inventory) error {
+// Buy is a mocked method in mocked inventory repository.
+func (r *InventoryRepo) Buy(iList []*model.Inventory) error {
 	args := r.Mock.Called(iList)
+
+	return args.Error(0)
+}
+
+// Clean is a mocked method in mocked inventory repository.
+func (r *InventoryRepo) Clean(req repository.RecycleReq) error {
+	args := r.Mock.Called(req)
 
 	return args.Error(0)
 }

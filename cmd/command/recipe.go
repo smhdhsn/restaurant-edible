@@ -95,11 +95,11 @@ func getFromFile(path string) ([]*model.Food, error) {
 	return m, nil
 }
 
-// convertToModel is responsible for converting schema to application's models.
+// convertToModel is responsible for converting json into application's models.
 func (r *RecipeFileSchema) convertToModel() []*model.Food {
-	cList := make([]*model.Component, 0)
 	fList := make([]*model.Food, 0)
 	for _, f := range r.Foods {
+		cList := make([]*model.Component, 0)
 		for _, cTitle := range f.Components {
 			cList = append(cList, &model.Component{Title: cTitle})
 		}

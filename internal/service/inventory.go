@@ -47,10 +47,15 @@ func (s *InventoryService) BuyComponents(req *BuyComponentsReq) error {
 		})
 	}
 
-	err = s.iRepo.BuyStocks(iList)
+	err = s.iRepo.Buy(iList)
 	if err != nil {
 		return errors.Wrap(err, "failed to buy components")
 	}
 
 	return nil
+}
+
+// Recycle is responsible for cleaning up the inventory from useless items.
+func (s *InventoryService) Recycle(req repository.RecycleReq) error {
+	return s.iRepo.Clean(req)
 }
