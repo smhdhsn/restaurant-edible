@@ -8,7 +8,6 @@ import (
 type RecycleReq struct {
 	Finished bool
 	Expired  bool
-	Staled   bool
 }
 
 // InventoryRepository is the interface representing inventory repository or it's mock.

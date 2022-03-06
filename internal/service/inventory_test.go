@@ -45,7 +45,6 @@ func TestRecycle(t *testing.T) {
 	req := repository.RecycleReq{
 		Finished: randBool,
 		Expired:  randBool,
-		Staled:   randBool,
 	}
 
 	iRepoMock := new(mock.InventoryRepo)

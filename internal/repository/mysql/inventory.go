@@ -31,7 +31,6 @@ func (r *InventoryRepo) Clean(req repository.RecycleReq) error {
 	return r.db.
 		Table("inventories AS i").
 		Where("i.expires_at < ? AND ?", time.Now(), req.Expired).
-		Or("i.best_before < ? AND ?", time.Now(), req.Staled).
 		Or("i.stock = 0  AND ?", req.Finished).
 		Delete(&model.Inventory{}).
 		Error

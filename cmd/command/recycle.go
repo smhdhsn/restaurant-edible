@@ -15,7 +15,6 @@ import (
 var (
 	recycleFinished = false
 	recycleExpired  = false
-	recycleStaled   = false
 )
 
 // recycleCMD is the subcommands responsible for cleaning up inventory from unusable items.
@@ -40,7 +39,6 @@ var recycleCMD = &cobra.Command{
 		err = iService.Recycle(repository.RecycleReq{
 			Finished: recycleFinished,
 			Expired:  recycleExpired,
-			Staled:   recycleStaled,
 		})
 		if err != nil {
 			log.Fatal(err)
@@ -54,5 +52,4 @@ func init() {
 
 	recycleCMD.Flags().BoolVarP(&recycleFinished, "finished", "f", false, "Recycle finished items.")
 	recycleCMD.Flags().BoolVarP(&recycleExpired, "expired", "e", false, "Recycle expired items.")
-	recycleCMD.Flags().BoolVarP(&recycleStaled, "staled", "s", false, "Recycle staled items.")
 }
