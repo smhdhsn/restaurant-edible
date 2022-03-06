@@ -7,4 +7,4 @@ api:
 command:
 	go build -o $(BIN_DIR)/ ./cmd/command
 build_all: api command
-.PHONY: up shell api command build_all
+.PHONY: up bash api command build_all
