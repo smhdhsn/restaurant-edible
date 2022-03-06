@@ -1,26 +1,54 @@
-# **Interview project**
+# Food
 
-## Food ordering system
+This repository is a simple food ordering system.
 
-Design a system that offers possible foods. User can place an order and the system will update the inventory after order's submittion.
+## About
 
-## APIs
+Following functionalities are provided in this project.
 
-- As a user, we need an API that returns possible foods based on available raw materials.
-- As a user, we need an API to register an order in the system.
+- Store and manage food recipes.
+- Submit orders.
+- Update inventory's stocks after each order submittion.
 
-## Required implementations
+### APIs
 
-- Once the request is made, the `/menu` API will return a response in JSON format that includes possible foods based on available ingredients.
-- User can order a food through `/order` API. After registering the order, the stock of raw materials for that food should be reduced.
-- Inventory should have `expires_at` attribute which holds ingredients' expiration dates, foods with expired ingredients should not be recommended in `/menu` API.
-- Inventory should have `best_before` attribute which holds ingredients' best usage dates, foods that their ingredients' `best-before` date have passed this time but not expired, should be at the end of the `/menu` API's response.
-- Each ingredient has a stock that will be decreased when an order is submitted.
-- If the stock of an ingredient is finished, foods with that ingredient should not be listed in `/menu` API's response.
-- Every 15 minutes, ingredients that has been finished or expired should be deleted and new stocks from those finished or expired ingredients should be stored in the inventory.
+- `/api/menu` returns possible foods based on available raw materials.
+- `/api/order` registers an order and updates inventory.
 
-## Optional implementations
+## Getting started
 
-- Implement `unit` and `integration` tests.
-- Implement `README.md` file to guid the client in setup, use and testing the service.
-- Implement `docker` and `docker-compose`.
+Make sure you have `docker` and `docker-compose` installed on your device.
+
+### Starting the containers
+
+Following command starts the application:
+
+```shell
+    make up
+```
+
+> :information_source: You need to wait a while for application to start.
+
+Following command is used to access the container's command line:
+
+```shell
+    make bash
+```
+
+Following command creates sample food recipe inside database:
+
+```shell
+    make recipe
+```
+
+Following command stores missing food components inside database:
+
+```shell
+    make buy
+```
+
+Following command deletes useless food components from database:
+
+```shell
+    make recycle
+```
