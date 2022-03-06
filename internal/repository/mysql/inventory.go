@@ -45,11 +45,17 @@ func (r *InventoryRepo) Use(foodID uint) error {
 		Where("i.stock > 0").
 		Where(
 			"i.component_id IN (?)",
-			r.db.
-				Table("food_components AS fc").
-				Select("fc.component_id").
-				Where("fc.food_id = ?", foodID),
+			componentsOfFood(r.db, foodID),
 		).
 		Update("i.stock", gorm.Expr("i.stock - ?", decrBy)).
 		Error
+}
+
+// availableInventoryItems is the subquery responsible for getting available food components from inventory.
+func availableInventoryItems(db *gorm.DB) *gorm.DB {
+	return db.
+		Table("inventories AS i").
+		Select("i.component_id").
+		Where("i.expires_at > ?", time.Now()).
+		Where("i.stock > 0")
 }

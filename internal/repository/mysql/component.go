@@ -1,8 +1,6 @@
 package mysql
 
 import (
-	"time"
-
 	"github.com/smhdhsn/food/internal/model"
 	"github.com/smhdhsn/food/internal/repository"
 	"gorm.io/gorm"
@@ -19,25 +17,14 @@ func NewComponentRepo(db *gorm.DB) repository.ComponentRepository {
 }
 
 // GetUnavailable is responsible for getting food components that are not avaiable.
-// Components with finished or expired stocks are counted as unavailable.
 func (r *ComponentRepo) GetUnavailable() ([]*model.Component, error) {
 	result := make([]*model.Component, 0)
 
 	tx := r.db.
 		Table("components AS c").
 		Where(
-			"c.id IN (?)",
-			r.db.
-				Table("inventories AS i").
-				Select("i.component_id").
-				Where("i.stock = ?", 0).
-				Or("i.expires_at < ?", time.Now()),
-		).
-		Or(
 			"c.id NOT IN (?)",
-			r.db.
-				Table("inventories AS i").
-				Select("i.component_id"),
+			availableInventoryItems(r.db),
 		).
 		Find(&result)
 

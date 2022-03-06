@@ -1,8 +1,6 @@
 package mysql
 
 import (
-	"time"
-
 	"github.com/smhdhsn/food/internal/model"
 	"github.com/smhdhsn/food/internal/repository"
 	"gorm.io/gorm"
@@ -18,7 +16,7 @@ func NewFoodRepo(db *gorm.DB) repository.FoodRepository {
 	return &FoodRepo{db}
 }
 
-// GetAvailableMeals gets foods that their components are available (not expired or finished).
+// GetAvailableMeals gets foods that their components are available.
 func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
 	result := make([]*model.Food, 0)
 
@@ -26,17 +24,7 @@ func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
 		Table("foods AS f").
 		Where(
 			"f.id NOT IN (?)",
-			r.db.
-				Table("food_components AS fc").
-				Select("fc.food_id").
-				Where(
-					"fc.component_id NOT IN (?)",
-					r.db.
-						Table("inventories AS i").
-						Select("i.component_id").
-						Where("i.expires_at > ?", time.Now()).
-						Where("i.stock != 0"),
-				),
+			unavailableFoods(r.db),
 		).
 		Find(&result)
 
