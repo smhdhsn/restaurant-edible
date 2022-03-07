@@ -17,5 +17,5 @@ func NewMenuService(fRepo repository.FoodRepository) *MenuService {
 
 // GetFood is responsible for fetching available meals from database.
 func (s *MenuService) GetFoods() ([]*model.Food, error) {
-	return s.fRepo.GetAvailableMeals()
+	return s.fRepo.GetAvailable()
 }

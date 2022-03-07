@@ -10,8 +10,8 @@ type FoodRepo struct {
 	mock.Mock
 }
 
-// GetAvailableMeals is a mocked method in mocked food repository.
-func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
+// GetAvailable is a mocked method in mocked food repository.
+func (r *FoodRepo) GetAvailable() ([]*model.Food, error) {
 	args := r.Mock.Called()
 
 	if v := args.Get(0); v != nil {

@@ -15,7 +15,7 @@ func TestOrderFood(t *testing.T) {
 	f.Title = randStr
 
 	fRepoMock := new(mock.FoodRepo)
-	fRepoMock.On("GetAvailableMeals").Return([]*model.Food{f}, nil)
+	fRepoMock.On("GetAvailable").Return([]*model.Food{f}, nil)
 
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Use", randUINT).Return(nil)

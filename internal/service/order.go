@@ -18,7 +18,7 @@ func NewOrderService(fRepo repository.FoodRepository, iRepo repository.Inventory
 
 // GetFood is responsible for fetching available meals from database.
 func (s *OrderService) OrderFood(foodID uint) (bool, error) {
-	foods, err := s.fRepo.GetAvailableMeals()
+	foods, err := s.fRepo.GetAvailable()
 	if err != nil {
 		return false, errors.Wrap(err, "failed to get available foods")
 	}

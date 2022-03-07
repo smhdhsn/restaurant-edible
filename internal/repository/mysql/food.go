@@ -16,8 +16,8 @@ func NewFoodRepo(db *gorm.DB) repository.FoodRepository {
 	return &FoodRepo{db}
 }
 
-// GetAvailableMeals gets foods that their components are available.
-func (r *FoodRepo) GetAvailableMeals() ([]*model.Food, error) {
+// GetAvailable gets foods that their components are available.
+func (r *FoodRepo) GetAvailable() ([]*model.Food, error) {
 	result := make([]*model.Food, 0)
 
 	tx := r.db.

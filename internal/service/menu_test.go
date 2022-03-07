@@ -14,7 +14,7 @@ func TestGetFoods(t *testing.T) {
 		Title: randStr,
 	}
 	fRepoMock := new(mock.FoodRepo)
-	fRepoMock.On("GetAvailableMeals").Return([]*model.Food{&f}, nil)
+	fRepoMock.On("GetAvailable").Return([]*model.Food{&f}, nil)
 
 	sut := NewMenuService(fRepoMock)
 
