@@ -19,7 +19,7 @@ Following functionalities are provided in this project.
 
 Make sure you have `docker` and `docker-compose` installed on your device.
 
-### Starting the containers
+### Commands
 
 Following command starts the application:
 
