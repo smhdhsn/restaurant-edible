@@ -34,7 +34,7 @@ func main() {
 
 	httpServer, err := http.New(mService, oService)
 	if err != nil {
-		log.Fatalln(err.Error())
+		log.Fatal(err)
 	}
 
 	log.Fatal(httpServer.Listen(conf.Server.Host, conf.Server.Port))
