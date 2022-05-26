@@ -7,24 +7,29 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mock"
+	"github.com/smhdhsn/restaurant-menu/util/random"
 )
 
 func TestOrderFood(t *testing.T) {
 	// Arrange
-	f := new(model.Food)
-	f.ID = randUINT
-	f.Title = randStr
+	randID := random.GenerateUint32(1, 100)
+	randTitle := random.GenerateString(5)
+
+	f := model.Food{
+		ID:    randID,
+		Title: randTitle,
+	}
 
 	fRepoMock := new(mock.FoodRepo)
-	fRepoMock.On("GetAvailable").Return([]*model.Food{f}, nil)
+	fRepoMock.On("GetAvailable").Return([]*model.Food{&f}, nil)
 
 	iRepoMock := new(mock.InventoryRepo)
-	iRepoMock.On("Use", randUINT).Return(nil)
+	iRepoMock.On("Use", randID).Return(nil)
 
 	sut := NewOrderService(fRepoMock, iRepoMock)
 
 	// Act
-	status, err := sut.OrderFood(randUINT)
+	status, err := sut.OrderFood(randID)
 
 	// Assert
 	assert.NoError(t, err)

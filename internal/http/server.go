@@ -8,21 +8,23 @@ import (
 	"github.com/rs/cors"
 
 	"github.com/smhdhsn/restaurant-menu/internal/config"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
 	"github.com/smhdhsn/restaurant-menu/util/cli"
+
+	mServ "github.com/smhdhsn/restaurant-menu/internal/service/menu"
+	oServ "github.com/smhdhsn/restaurant-menu/internal/service/order"
 )
 
 // Server contains server's services.
 type Server struct {
-	menu   *service.MenuService
-	order  *service.OrderService
+	menu   *mServ.MenuService
+	order  *oServ.OrderService
 	router *mux.Router
 }
 
 // New creates a new http server.
 func New(
-	mService *service.MenuService,
-	oService *service.OrderService,
+	mService *mServ.MenuService,
+	oService *oServ.OrderService,
 ) (*Server, error) {
 	r := mux.NewRouter().StrictSlash(true)
 
@@ -48,13 +50,13 @@ func New(
 
 // Listen is responsible for starting the HTTP server.
 func (s *Server) Listen(host string, port int) error {
-	conf, err := config.LoadConf()
+	_, err := config.LoadConf()
 	if err != nil {
 		return err
 	}
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: conf.ClientURI,
+		AllowedOrigins: []string{},
 		AllowedMethods: []string{
 			http.MethodGet,
 			http.MethodPost,

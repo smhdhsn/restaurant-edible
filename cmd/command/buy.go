@@ -7,14 +7,15 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/config"
 	"github.com/smhdhsn/restaurant-menu/internal/db"
+	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	iServ "github.com/smhdhsn/restaurant-menu/internal/service/inventory"
 )
 
 var (
-	amount     = uint(3)                     // the amount of items being added to inventory with every buy.
+	amount     = uint32(3)                   // the amount of items being added to inventory with every buy.
 	bestBefore = time.Now().AddDate(0, 2, 0) // item's best usage time.
 	expiresAt  = time.Now().AddDate(0, 5, 0) // item's expiration time.
 )
@@ -24,37 +25,49 @@ var buyCMD = &cobra.Command{
 	Use:   "buy",
 	Short: "Stores new food components inside database if their components' stock are finished or expired.",
 	Run: func(cmd *cobra.Command, args []string) {
+		// read configurations.
 		conf, err := config.LoadConf()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		dbConn, err := db.Connect(conf.DB)
+		// create a database connection.
+		dbConn, err := db.Connect(&conf.DB)
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		// initialize auto migration.
 		if err := db.InitMigrations(dbConn); err != nil {
 			log.Fatal(err)
 		}
 
-		iRepo := mysql.NewInventoryRepo(dbConn)
-		cRepo := mysql.NewComponentRepo(dbConn)
+		// instantiate models.
+		iModel := new(model.Inventory)
+		cModel := new(model.Component)
 
-		iService := service.NewInventoryService(iRepo, cRepo)
+		// instantiate repositories.
+		iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
+		cRepo := mysql.NewComponentRepo(dbConn, *cModel)
 
-		a, err := cmd.Flags().GetUint("amount")
+		// instantiate services.
+		i := iServ.NewInventoryService(iRepo, cRepo)
+
+		// read amount from cli.
+		a, err := cmd.Flags().GetUint32("amount")
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		req := service.BuyComponentsReq{
+		// create service request.
+		req := iServ.BuyComponentsReq{
 			StockAmount: a,
 			BestBefore:  bestBefore,
 			ExpiresAt:   expiresAt,
 		}
 
-		err = iService.BuyComponents(&req)
+		// call service.
+		err = i.BuyComponents(&req)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -65,5 +78,5 @@ var buyCMD = &cobra.Command{
 func init() {
 	rootCMD.AddCommand(buyCMD)
 
-	buyCMD.Flags().UintP("amount", "a", amount, "The amount of stocks added to inventory after each buy.")
+	buyCMD.Flags().Uint32P("amount", "a", amount, "The amount of stocks added to inventory after each buy.")
 }

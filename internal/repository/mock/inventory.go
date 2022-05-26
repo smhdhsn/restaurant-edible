@@ -4,7 +4,8 @@ import (
 	"github.com/stretchr/testify/mock"
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
+
+	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
 )
 
 // InventoryRepo is inventory repository's mock.
@@ -13,7 +14,7 @@ type InventoryRepo struct {
 }
 
 // Use is a mocked method in mocked inventory repository.
-func (r *InventoryRepo) Use(foodID uint) error {
+func (r *InventoryRepo) Use(foodID uint32) error {
 	args := r.Mock.Called(foodID)
 
 	return args.Error(0)
@@ -27,7 +28,7 @@ func (r *InventoryRepo) Buy(iList []*model.Inventory) error {
 }
 
 // Clean is a mocked method in mocked inventory repository.
-func (r *InventoryRepo) Clean(req repository.RecycleReq) error {
+func (r *InventoryRepo) Clean(req iRepoContract.RecycleReq) error {
 	args := r.Mock.Called(req)
 
 	return args.Error(0)

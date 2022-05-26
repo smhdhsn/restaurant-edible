@@ -6,25 +6,26 @@ import (
 	"net/http"
 
 	"github.com/smhdhsn/restaurant-menu/internal/http/helper"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
+
+	oServ "github.com/smhdhsn/restaurant-menu/internal/service/order"
 )
 
 // OrderReq is the order submittion's request schema.
 type OrderReq struct {
-	FoodID uint `json:"food_id"`
+	FoodID uint32 `json:"food_id"`
 }
 
 // OrderHandler contains services that can be used within order handler.
 type OrderHandler struct {
-	oService *service.OrderService
-	res      *helper.RespBody
+	oServ *oServ.OrderService
+	res   *helper.RespBody
 }
 
 // NewOrderHandler creates a new order handler.
-func NewOrderHandler(oService *service.OrderService) *OrderHandler {
+func NewOrderHandler(o *oServ.OrderService) *OrderHandler {
 	return &OrderHandler{
-		oService: oService,
-		res:      &helper.RespBody{},
+		oServ: o,
+		res:   &helper.RespBody{},
 	}
 }
 
@@ -43,7 +44,7 @@ func (h *OrderHandler) SubmitOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := h.oService.OrderFood(req.FoodID)
+	data, err := h.oServ.OrderFood(req.FoodID)
 	if err != nil {
 		h.res.
 			SetData(data).

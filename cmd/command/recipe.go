@@ -12,9 +12,9 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/db"
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	rServ "github.com/smhdhsn/restaurant-menu/internal/service/recipe"
 )
 
 // RecipeSchema holds schema for recipe JSON.
@@ -30,36 +30,46 @@ var recipeCMD = &cobra.Command{
 	Use:   "recipe",
 	Short: "Stores sample recipes inside database.",
 	Run: func(cmd *cobra.Command, args []string) {
+		// read configurations.
 		conf, err := config.LoadConf()
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		dbConn, err := db.Connect(conf.DB)
+		// create a database connection.
+		dbConn, err := db.Connect(&conf.DB)
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		// initialize auto migration.
 		if err := db.InitMigrations(dbConn); err != nil {
 			log.Fatal(err)
 		}
 
-		fRepo := mysql.NewFoodRepo(dbConn)
+		// instantiate models.
+		fModel := new(model.Food)
 
-		rService := service.NewRecipeService(fRepo)
+		// instantiate repositories.
+		fRepo := mysql.NewFoodRepo(dbConn, *fModel)
 
+		// instantiate services.
+		r := rServ.NewRecipeService(fRepo)
+
+		// read JSON file's path from cli.
 		j, err := cmd.Flags().GetString("json")
 		if err != nil {
 			log.Fatal(err)
 		}
 
+		// decode JSON file.
 		data, err := getFromFile(j)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		err = rService.CreateRecipe(data)
-		if err != nil {
+		// call service.
+		if err := r.CreateRecipe(data); err != nil {
 			log.Fatal(err)
 		}
 	},

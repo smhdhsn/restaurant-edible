@@ -1,4 +1,4 @@
-package service
+package inventory
 
 import (
 	"time"
@@ -6,24 +6,26 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
+
+	cRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/component"
+	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
 )
 
 // InventoryService contains repositories that will be used within this service.
 type InventoryService struct {
-	iRepo repository.InventoryRepository
-	cRepo repository.ComponentRepository
+	iRepo iRepoContract.InventoryRepository
+	cRepo cRepoContract.ComponentRepository
 }
 
 // BuyComponentsReq holds the details of buyed stocks.
 type BuyComponentsReq struct {
-	StockAmount uint
+	StockAmount uint32
 	BestBefore  time.Time
 	ExpiresAt   time.Time
 }
 
 // NewInventoryService creates an inventory service with it's dependencies.
-func NewInventoryService(iRepo repository.InventoryRepository, cRepo repository.ComponentRepository) *InventoryService {
+func NewInventoryService(iRepo iRepoContract.InventoryRepository, cRepo cRepoContract.ComponentRepository) *InventoryService {
 	return &InventoryService{iRepo: iRepo, cRepo: cRepo}
 }
 
@@ -57,6 +59,6 @@ func (s *InventoryService) BuyComponents(req *BuyComponentsReq) error {
 }
 
 // Recycle is responsible for cleaning up the inventory from useless items.
-func (s *InventoryService) Recycle(req repository.RecycleReq) error {
+func (s *InventoryService) Recycle(req iRepoContract.RecycleReq) error {
 	return s.iRepo.Clean(req)
 }

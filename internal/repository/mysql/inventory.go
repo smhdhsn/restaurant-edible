@@ -6,7 +6,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
+
+	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
 )
 
 // the amount of items being used with every order submittion.
@@ -14,12 +15,16 @@ const decrBy = 1
 
 // InventoryRepo contains repository's database connection.
 type InventoryRepo struct {
-	db *gorm.DB
+	model model.Inventory
+	db    *gorm.DB
 }
 
 // NewInventoryRepo creates an instance of the repository with database connection.
-func NewInventoryRepo(db *gorm.DB) repository.InventoryRepository {
-	return &InventoryRepo{db}
+func NewInventoryRepo(db *gorm.DB, m model.Inventory) iRepoContract.InventoryRepository {
+	return &InventoryRepo{
+		model: m,
+		db:    db,
+	}
 }
 
 // Buy is responsible for buying food components for the inventory, if components' stock are finished or expired.
@@ -28,7 +33,7 @@ func (r *InventoryRepo) Buy(iList []*model.Inventory) error {
 }
 
 // Clean is responsible for cleaning up inventory from useless items.
-func (r *InventoryRepo) Clean(req repository.RecycleReq) error {
+func (r *InventoryRepo) Clean(req iRepoContract.RecycleReq) error {
 	return r.db.
 		Table("inventories AS i").
 		Where("i.expires_at < ? AND ?", time.Now(), req.Expired).
@@ -38,7 +43,7 @@ func (r *InventoryRepo) Clean(req repository.RecycleReq) error {
 }
 
 // Use decreases food components' stock from inventory.
-func (r *InventoryRepo) Use(foodID uint) error {
+func (r *InventoryRepo) Use(foodID uint32) error {
 	return r.db.
 		Table("inventories AS i").
 		Where("i.expires_at > ?", time.Now()).

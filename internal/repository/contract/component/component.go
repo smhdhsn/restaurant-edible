@@ -1,4 +1,4 @@
-package repository
+package component
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"

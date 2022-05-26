@@ -4,38 +4,57 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/config"
 	"github.com/smhdhsn/restaurant-menu/internal/db"
 	"github.com/smhdhsn/restaurant-menu/internal/http"
+	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	mServ "github.com/smhdhsn/restaurant-menu/internal/service/menu"
+	oServ "github.com/smhdhsn/restaurant-menu/internal/service/order"
 )
 
 // main is the main application entry.
 func main() {
+	// read configurations.
 	conf, err := config.LoadConf()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	dbConn, err := db.Connect(conf.DB)
+	// create a database connection.
+	dbConn, err := db.Connect(&conf.DB)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// initialize auto migration.
 	if err := db.InitMigrations(dbConn); err != nil {
 		log.Fatal(err)
 	}
 
-	fRepo := mysql.NewFoodRepo(dbConn)
-	iRepo := mysql.NewInventoryRepo(dbConn)
+	// instantiate models.
+	fModel := new(model.Food)
+	iModel := new(model.Inventory)
 
-	mService := service.NewMenuService(fRepo)
-	oService := service.NewOrderService(fRepo, iRepo)
+	// instantiate repositories.
+	fRepo := mysql.NewFoodRepo(dbConn, *fModel)
+	iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
 
-	httpServer, err := http.New(mService, oService)
+	// instantiate services.
+	m := mServ.NewMenuService(fRepo)
+	o := oServ.NewOrderService(fRepo, iRepo)
+
+	// instantiate handlers.
+
+	// instantiate resources.
+
+	// instantiate gRPC server.
+	s, err := http.New(m, o)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Fatal(httpServer.Listen(conf.Server.Host, conf.Server.Port))
+	// listen and serve.
+	if err := s.Listen(conf.Server.Host, conf.Server.Port); err != nil {
+		log.Fatal(err)
+	}
 }

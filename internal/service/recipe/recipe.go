@@ -4,16 +4,16 @@ import (
 	"github.com/pkg/errors"
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
+	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
 )
 
 // RecipeService contains repositories that will be used within this service.
 type RecipeService struct {
-	fRepo repository.FoodRepository
+	fRepo fRepoContract.FoodRepository
 }
 
 // NewRecipeService creates a recipe service with it's dependencies.
-func NewRecipeService(fRepo repository.FoodRepository) *RecipeService {
+func NewRecipeService(fRepo fRepoContract.FoodRepository) *RecipeService {
 	return &RecipeService{fRepo: fRepo}
 }
 

@@ -1,17 +1,18 @@
-package service
+package menu
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
+
+	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
 )
 
 // MenuService contains repositories that will be used within this service.
 type MenuService struct {
-	fRepo repository.FoodRepository
+	fRepo fRepoContract.FoodRepository
 }
 
 // NewMenuService creates a menu service with it's dependencies.
-func NewMenuService(fRepo repository.FoodRepository) *MenuService {
+func NewMenuService(fRepo fRepoContract.FoodRepository) *MenuService {
 	return &MenuService{fRepo: fRepo}
 }
 

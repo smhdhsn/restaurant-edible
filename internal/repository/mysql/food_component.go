@@ -16,7 +16,7 @@ func unavailableFoods(db *gorm.DB) *gorm.DB {
 }
 
 // componentsOfFood is the subquery responsible for getting components related to given "food_id".
-func componentsOfFood(db *gorm.DB, foodID uint) *gorm.DB {
+func componentsOfFood(db *gorm.DB, foodID uint32) *gorm.DB {
 	return db.
 		Table("food_components AS fc").
 		Select("fc.component_id").

@@ -1,0 +1,11 @@
+server: 
+  protocol: "tcp"
+  host: ""
+  port: 80
+
+db:
+  host: "restaurant_menu_db"
+  port: 3306
+  name: "restaurant_menu"
+  user: "restaurant_menu"
+  pass: "restaurant_menu"

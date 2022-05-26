@@ -1,4 +1,4 @@
-package service
+package inventory
 
 import (
 	"testing"
@@ -6,14 +6,21 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mock"
+	"github.com/smhdhsn/restaurant-menu/util/random"
+
+	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
 )
 
 func TestBuyComponents(t *testing.T) {
 	// Arrange
+	randTitle := random.GenerateString(5)
+	randStock := random.GenerateUint32(1, 3)
+	randBestBefore := random.GenerateDateBetween(2022, 2025)
+	randExpiresAt := random.GenerateDateBetween(2025, 2030)
+
 	c := model.Component{
-		Title: randStr,
+		Title: randTitle,
 	}
 
 	cRepoMock := new(mock.ComponentRepo)
@@ -21,9 +28,9 @@ func TestBuyComponents(t *testing.T) {
 
 	i := model.Inventory{
 		ComponentID: c.ID,
-		Stock:       randUINT,
-		BestBefore:  randDate,
-		ExpiresAt:   randDate,
+		Stock:       randStock,
+		BestBefore:  randBestBefore,
+		ExpiresAt:   randExpiresAt,
 	}
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Buy", []*model.Inventory{&i}).Return(nil)
@@ -32,9 +39,9 @@ func TestBuyComponents(t *testing.T) {
 
 	// Act
 	err := sut.BuyComponents(&BuyComponentsReq{
-		StockAmount: randUINT,
-		BestBefore:  randDate,
-		ExpiresAt:   randDate,
+		StockAmount: randStock,
+		BestBefore:  randBestBefore,
+		ExpiresAt:   randExpiresAt,
 	})
 
 	// Assert
@@ -43,9 +50,12 @@ func TestBuyComponents(t *testing.T) {
 
 func TestRecycle(t *testing.T) {
 	// Arrange
-	req := repository.RecycleReq{
-		Finished: randBool,
-		Expired:  randBool,
+	randFinished := random.GenerateBool()
+	randExpired := random.GenerateBool()
+
+	req := iRepoContract.RecycleReq{
+		Finished: randFinished,
+		Expired:  randExpired,
 	}
 
 	iRepoMock := new(mock.InventoryRepo)

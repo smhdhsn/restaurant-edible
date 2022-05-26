@@ -4,32 +4,33 @@ import (
 	"net/http"
 
 	"github.com/smhdhsn/restaurant-menu/internal/http/helper"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
+
+	mServ "github.com/smhdhsn/restaurant-menu/internal/service/menu"
 )
 
 // MenuResp is the response schema of the menu API.
 type MenuResp struct {
-	ID    uint   `json:"id"`
+	ID    uint32 `json:"id"`
 	Title string `json:"title"`
 }
 
 // MenuHandler contains services that can be used within menu handler.
 type MenuHandler struct {
-	mService *service.MenuService
-	res      *helper.RespBody
+	mServ *mServ.MenuService
+	res   *helper.RespBody
 }
 
 // NewMenuHandler creates a new menu handler.
-func NewMenuHandler(mService *service.MenuService) *MenuHandler {
+func NewMenuHandler(m *mServ.MenuService) *MenuHandler {
 	return &MenuHandler{
-		mService: mService,
-		res:      &helper.RespBody{},
+		mServ: m,
+		res:   &helper.RespBody{},
 	}
 }
 
 // GetMenu is responsible for getting menu with available food.
 func (h *MenuHandler) GetMenu(w http.ResponseWriter, r *http.Request) {
-	foods, err := h.mService.GetFoods()
+	foods, err := h.mServ.GetFoods()
 	if err != nil {
 		h.res.
 			SetError(err).

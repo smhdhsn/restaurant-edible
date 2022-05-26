@@ -1,4 +1,4 @@
-package repository
+package inventory
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"
@@ -12,7 +12,7 @@ type RecycleReq struct {
 
 // InventoryRepository is the interface representing inventory repository or it's mock.
 type InventoryRepository interface {
-	Use(uint) error
 	Buy([]*model.Inventory) error
 	Clean(RecycleReq) error
+	Use(uint32) error
 }

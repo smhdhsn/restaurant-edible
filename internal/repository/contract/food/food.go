@@ -1,4 +1,4 @@
-package repository
+package food
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"

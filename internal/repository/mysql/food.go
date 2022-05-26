@@ -4,17 +4,22 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository"
+
+	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
 )
 
 // FoodRepo contains repository's database connection.
 type FoodRepo struct {
-	db *gorm.DB
+	model model.Food
+	db    *gorm.DB
 }
 
 // NewFoodRepo creates an instance of the repository with database connection.
-func NewFoodRepo(db *gorm.DB) repository.FoodRepository {
-	return &FoodRepo{db}
+func NewFoodRepo(db *gorm.DB, m model.Food) fRepoContract.FoodRepository {
+	return &FoodRepo{
+		model: m,
+		db:    db,
+	}
 }
 
 // GetAvailable gets foods that their components are available.
