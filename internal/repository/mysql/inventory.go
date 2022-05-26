@@ -3,9 +3,10 @@ package mysql
 import (
 	"time"
 
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository"
 	"gorm.io/gorm"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository"
 )
 
 // the amount of items being used with every order submittion.

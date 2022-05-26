@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/smhdhsn/food/internal/config"
-	"github.com/smhdhsn/food/internal/db"
-	"github.com/smhdhsn/food/internal/http"
-	"github.com/smhdhsn/food/internal/repository/mysql"
-	"github.com/smhdhsn/food/internal/service"
+	"github.com/smhdhsn/restaurant-menu/internal/config"
+	"github.com/smhdhsn/restaurant-menu/internal/db"
+	"github.com/smhdhsn/restaurant-menu/internal/http"
+	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 )
 
 // main is the main application entry.

@@ -2,7 +2,8 @@ package service
 
 import (
 	"github.com/pkg/errors"
-	"github.com/smhdhsn/food/internal/repository"
+
+	"github.com/smhdhsn/restaurant-menu/internal/repository"
 )
 
 // OrderService contains repositories that will be used within this service.

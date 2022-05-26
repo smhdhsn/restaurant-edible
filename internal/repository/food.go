@@ -1,6 +1,8 @@
 package repository
 
-import "github.com/smhdhsn/food/internal/model"
+import (
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+)
 
 // FoodRepository is the interface representing food repository or it's mock.
 type FoodRepository interface {

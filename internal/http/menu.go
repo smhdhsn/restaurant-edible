@@ -3,8 +3,8 @@ package http
 import (
 	"net/http"
 
-	"github.com/smhdhsn/food/internal/http/helper"
-	"github.com/smhdhsn/food/internal/service"
+	"github.com/smhdhsn/restaurant-menu/internal/http/helper"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 )
 
 // MenuResp is the response schema of the menu API.

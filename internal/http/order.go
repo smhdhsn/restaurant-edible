@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/smhdhsn/food/internal/http/helper"
-	"github.com/smhdhsn/food/internal/service"
+	"github.com/smhdhsn/restaurant-menu/internal/http/helper"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 )
 
 // OrderReq is the order submittion's request schema.

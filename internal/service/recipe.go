@@ -2,8 +2,9 @@ package service
 
 import (
 	"github.com/pkg/errors"
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository"
 )
 
 // RecipeService contains repositories that will be used within this service.

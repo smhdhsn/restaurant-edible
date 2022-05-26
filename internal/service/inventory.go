@@ -4,8 +4,9 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository"
 )
 
 // InventoryService contains repositories that will be used within this service.

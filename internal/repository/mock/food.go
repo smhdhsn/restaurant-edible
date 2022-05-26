@@ -1,8 +1,9 @@
 package mock
 
 import (
-	"github.com/smhdhsn/food/internal/model"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
 )
 
 // FoodRepo is food repository's mock.

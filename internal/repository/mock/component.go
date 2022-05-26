@@ -1,8 +1,9 @@
 package mock
 
 import (
-	"github.com/smhdhsn/food/internal/model"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
 )
 
 // ComponentRepo is component repository's mock.

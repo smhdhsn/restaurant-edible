@@ -4,11 +4,12 @@ import (
 	"log"
 	"time"
 
-	"github.com/smhdhsn/food/internal/config"
-	"github.com/smhdhsn/food/internal/db"
-	"github.com/smhdhsn/food/internal/repository/mysql"
-	"github.com/smhdhsn/food/internal/service"
 	"github.com/spf13/cobra"
+
+	"github.com/smhdhsn/restaurant-menu/internal/config"
+	"github.com/smhdhsn/restaurant-menu/internal/db"
+	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 )
 
 var (

@@ -1,8 +1,9 @@
 package db
 
 import (
-	"github.com/smhdhsn/food/internal/model"
 	"gorm.io/gorm"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
 )
 
 // MigrationModels holds the schema of the models to be migrated to database.

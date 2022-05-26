@@ -1,9 +1,10 @@
 package mysql
 
 import (
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository"
 	"gorm.io/gorm"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository"
 )
 
 // FoodRepo contains repository's database connection.

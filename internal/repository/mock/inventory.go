@@ -1,9 +1,10 @@
 package mock
 
 import (
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository"
 )
 
 // InventoryRepo is inventory repository's mock.

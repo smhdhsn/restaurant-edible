@@ -3,9 +3,10 @@ package service
 import (
 	"testing"
 
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository/mock"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository/mock"
 )
 
 func TestOrderFood(t *testing.T) {

@@ -7,12 +7,13 @@ import (
 	"os"
 
 	"github.com/pkg/errors"
-	"github.com/smhdhsn/food/internal/config"
-	"github.com/smhdhsn/food/internal/db"
-	"github.com/smhdhsn/food/internal/model"
-	"github.com/smhdhsn/food/internal/repository/mysql"
-	"github.com/smhdhsn/food/internal/service"
 	"github.com/spf13/cobra"
+
+	"github.com/smhdhsn/restaurant-menu/internal/config"
+	"github.com/smhdhsn/restaurant-menu/internal/db"
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 )
 
 // RecipeSchema holds schema for recipe JSON.

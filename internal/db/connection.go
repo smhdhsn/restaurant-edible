@@ -3,9 +3,10 @@ package db
 import (
 	"fmt"
 
-	"github.com/smhdhsn/food/internal/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"github.com/smhdhsn/restaurant-menu/internal/config"
 )
 
 // Connect creates a database connection.

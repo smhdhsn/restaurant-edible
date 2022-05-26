@@ -6,9 +6,10 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
-	"github.com/smhdhsn/food/internal/config"
-	"github.com/smhdhsn/food/internal/service"
-	"github.com/smhdhsn/food/util/cli"
+
+	"github.com/smhdhsn/restaurant-menu/internal/config"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
+	"github.com/smhdhsn/restaurant-menu/util/cli"
 )
 
 // Server contains server's services.
