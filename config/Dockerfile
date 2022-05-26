@@ -1,5 +1,5 @@
 # Building binary.
-FROM golang:1.17 AS binary
+FROM golang:1.18 AS binary
 
 RUN apt-get update && apt-get upgrade -yq
 
@@ -22,4 +22,4 @@ COPY --from=binary /build/command /build/server /app/
 
 WORKDIR /app
 
-EXPOSE 9000
+EXPOSE 9002

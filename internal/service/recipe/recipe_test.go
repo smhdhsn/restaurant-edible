@@ -22,7 +22,7 @@ func TestCreateRecipe(t *testing.T) {
 	fRepoMock := new(mock.FoodRepo)
 	fRepoMock.On("BatchInsert", fList).Return(nil)
 
-	sut := NewRecipeService(fRepoMock)
+	sut := NewRecipeServ(fRepoMock)
 
 	// Act
 	err := sut.CreateRecipe(fList)

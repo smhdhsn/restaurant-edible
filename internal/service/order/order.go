@@ -5,24 +5,25 @@ import (
 
 	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
 	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
+	oServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/order"
 )
 
-// OrderService contains repositories that will be used within this service.
-type OrderService struct {
+// OrderServ contains repositories that will be used within this service.
+type OrderServ struct {
 	fRepo fRepoContract.FoodRepository
 	iRepo iRepoContract.InventoryRepository
 }
 
-// NewOrderService creates an order service with it's dependencies.
-func NewOrderService(fRepo fRepoContract.FoodRepository, iRepo iRepoContract.InventoryRepository) *OrderService {
-	return &OrderService{
+// NewOrderServ creates an order service with it's dependencies.
+func NewOrderServ(fRepo fRepoContract.FoodRepository, iRepo iRepoContract.InventoryRepository) oServContract.OrderService {
+	return &OrderServ{
 		fRepo: fRepo,
 		iRepo: iRepo,
 	}
 }
 
 // GetFood is responsible for fetching available meals from database.
-func (s *OrderService) OrderFood(foodID uint32) (bool, error) {
+func (s *OrderServ) OrderFood(foodID uint32) (bool, error) {
 	foods, err := s.fRepo.GetAvailable()
 	if err != nil {
 		return false, errors.Wrap(err, "failed to get available foods")

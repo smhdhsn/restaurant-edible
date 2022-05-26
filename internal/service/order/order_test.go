@@ -26,7 +26,7 @@ func TestOrderFood(t *testing.T) {
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Use", randID).Return(nil)
 
-	sut := NewOrderService(fRepoMock, iRepoMock)
+	sut := NewOrderServ(fRepoMock, iRepoMock)
 
 	// Act
 	status, err := sut.OrderFood(randID)

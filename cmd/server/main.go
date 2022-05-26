@@ -40,21 +40,21 @@ func main() {
 	iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
 
 	// instantiate services.
-	m := mServ.NewMenuService(fRepo)
-	o := oServ.NewOrderService(fRepo, iRepo)
+	m := mServ.NewMenuServ(fRepo)
+	o := oServ.NewOrderServ(fRepo, iRepo)
 
 	// instantiate handlers.
 
 	// instantiate resources.
 
 	// instantiate gRPC server.
-	s, err := http.New(m, o)
+	s, err := http.New(&conf.Server, m, o)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// listen and serve.
-	if err := s.Listen(conf.Server.Host, conf.Server.Port); err != nil {
+	if err := s.Listen(&conf.Server); err != nil {
 		log.Fatal(err)
 	}
 }

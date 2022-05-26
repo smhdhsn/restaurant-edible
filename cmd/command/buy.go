@@ -11,6 +11,7 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	iServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/inventory"
 	iServ "github.com/smhdhsn/restaurant-menu/internal/service/inventory"
 )
 
@@ -51,7 +52,7 @@ var buyCMD = &cobra.Command{
 		cRepo := mysql.NewComponentRepo(dbConn, *cModel)
 
 		// instantiate services.
-		i := iServ.NewInventoryService(iRepo, cRepo)
+		i := iServ.NewInventoryServ(iRepo, cRepo)
 
 		// read amount from cli.
 		a, err := cmd.Flags().GetUint32("amount")
@@ -60,7 +61,7 @@ var buyCMD = &cobra.Command{
 		}
 
 		// create service request.
-		req := iServ.BuyComponentsReq{
+		req := iServContract.BuyComponentsReq{
 			StockAmount: a,
 			BestBefore:  bestBefore,
 			ExpiresAt:   expiresAt,

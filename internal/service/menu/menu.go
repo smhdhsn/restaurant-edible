@@ -4,19 +4,20 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 
 	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
+	mServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/menu"
 )
 
-// MenuService contains repositories that will be used within this service.
-type MenuService struct {
+// MenuServ contains repositories that will be used within this service.
+type MenuServ struct {
 	fRepo fRepoContract.FoodRepository
 }
 
-// NewMenuService creates a menu service with it's dependencies.
-func NewMenuService(fRepo fRepoContract.FoodRepository) *MenuService {
-	return &MenuService{fRepo: fRepo}
+// NewMenuServ creates a menu service with it's dependencies.
+func NewMenuServ(fRepo fRepoContract.FoodRepository) mServContract.MenuService {
+	return &MenuServ{fRepo: fRepo}
 }
 
 // GetFood is responsible for fetching available meals from database.
-func (s *MenuService) GetFoods() ([]*model.Food, error) {
+func (s *MenuServ) GetFoods() ([]*model.Food, error) {
 	return s.fRepo.GetAvailable()
 }

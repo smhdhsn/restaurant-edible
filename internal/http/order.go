@@ -7,7 +7,7 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/http/helper"
 
-	oServ "github.com/smhdhsn/restaurant-menu/internal/service/order"
+	oServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/order"
 )
 
 // OrderReq is the order submittion's request schema.
@@ -17,12 +17,12 @@ type OrderReq struct {
 
 // OrderHandler contains services that can be used within order handler.
 type OrderHandler struct {
-	oServ *oServ.OrderService
+	oServ oServContract.OrderService
 	res   *helper.RespBody
 }
 
 // NewOrderHandler creates a new order handler.
-func NewOrderHandler(o *oServ.OrderService) *OrderHandler {
+func NewOrderHandler(o oServContract.OrderService) *OrderHandler {
 	return &OrderHandler{
 		oServ: o,
 		res:   &helper.RespBody{},

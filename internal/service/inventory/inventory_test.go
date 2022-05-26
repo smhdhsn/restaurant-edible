@@ -10,6 +10,7 @@ import (
 	"github.com/smhdhsn/restaurant-menu/util/random"
 
 	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
+	iServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/inventory"
 )
 
 func TestBuyComponents(t *testing.T) {
@@ -35,14 +36,16 @@ func TestBuyComponents(t *testing.T) {
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Buy", []*model.Inventory{&i}).Return(nil)
 
-	sut := NewInventoryService(iRepoMock, cRepoMock)
-
-	// Act
-	err := sut.BuyComponents(&BuyComponentsReq{
+	req := iServContract.BuyComponentsReq{
 		StockAmount: randStock,
 		BestBefore:  randBestBefore,
 		ExpiresAt:   randExpiresAt,
-	})
+	}
+
+	sut := NewInventoryServ(iRepoMock, cRepoMock)
+
+	// Act
+	err := sut.BuyComponents(&req)
 
 	// Assert
 	assert.NoError(t, err)
@@ -61,7 +64,7 @@ func TestRecycle(t *testing.T) {
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Clean", req).Return(nil)
 
-	sut := NewInventoryService(iRepoMock, nil)
+	sut := NewInventoryServ(iRepoMock, nil)
 
 	// Act
 	err := sut.Recycle(req)

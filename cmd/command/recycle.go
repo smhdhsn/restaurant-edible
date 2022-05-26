@@ -45,7 +45,7 @@ var recycleCMD = &cobra.Command{
 		iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
 
 		// instantiate services.
-		i := iServ.NewInventoryService(iRepo, nil)
+		i := iServ.NewInventoryServ(iRepo, nil)
 
 		// create service request.
 		req := iRepoContract.RecycleReq{

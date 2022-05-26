@@ -5,7 +5,7 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/http/helper"
 
-	mServ "github.com/smhdhsn/restaurant-menu/internal/service/menu"
+	mServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/menu"
 )
 
 // MenuResp is the response schema of the menu API.
@@ -16,12 +16,12 @@ type MenuResp struct {
 
 // MenuHandler contains services that can be used within menu handler.
 type MenuHandler struct {
-	mServ *mServ.MenuService
+	mServ mServContract.MenuService
 	res   *helper.RespBody
 }
 
 // NewMenuHandler creates a new menu handler.
-func NewMenuHandler(m *mServ.MenuService) *MenuHandler {
+func NewMenuHandler(m mServContract.MenuService) *MenuHandler {
 	return &MenuHandler{
 		mServ: m,
 		res:   &helper.RespBody{},

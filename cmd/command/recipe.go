@@ -54,7 +54,7 @@ var recipeCMD = &cobra.Command{
 		fRepo := mysql.NewFoodRepo(dbConn, *fModel)
 
 		// instantiate services.
-		r := rServ.NewRecipeService(fRepo)
+		r := rServ.NewRecipeServ(fRepo)
 
 		// read JSON file's path from cli.
 		j, err := cmd.Flags().GetString("json")

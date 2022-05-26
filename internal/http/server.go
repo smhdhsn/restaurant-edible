@@ -8,23 +8,25 @@ import (
 	"github.com/rs/cors"
 
 	"github.com/smhdhsn/restaurant-menu/internal/config"
-	"github.com/smhdhsn/restaurant-menu/util/cli"
 
-	mServ "github.com/smhdhsn/restaurant-menu/internal/service/menu"
-	oServ "github.com/smhdhsn/restaurant-menu/internal/service/order"
+	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	mServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/menu"
+	oServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/order"
 )
 
 // Server contains server's services.
 type Server struct {
-	menu   *mServ.MenuService
-	order  *oServ.OrderService
+	menu   mServContract.MenuService
+	order  oServContract.OrderService
+	conf   *config.ServerConf
 	router *mux.Router
 }
 
 // New creates a new http server.
 func New(
-	mService *mServ.MenuService,
-	oService *oServ.OrderService,
+	c *config.ServerConf,
+	mService mServContract.MenuService,
+	oService oServContract.OrderService,
 ) (*Server, error) {
 	r := mux.NewRouter().StrictSlash(true)
 
@@ -44,18 +46,19 @@ func New(
 	return &Server{
 		mService,
 		oService,
+		c,
 		r,
 	}, nil
 }
 
 // Listen is responsible for starting the HTTP server.
-func (s *Server) Listen(host string, port int) error {
+func (s *Server) Listen(c *config.ServerConf) error {
 	_, err := config.LoadConf()
 	if err != nil {
 		return err
 	}
 
-	c := cors.New(cors.Options{
+	cor := cors.New(cors.Options{
 		AllowedOrigins: []string{},
 		AllowedMethods: []string{
 			http.MethodGet,
@@ -65,6 +68,6 @@ func (s *Server) Listen(host string, port int) error {
 		AllowCredentials: true,
 	})
 
-	fmt.Printf("%sStarting server%s: <http://%s:%d>\n", cli.GREEN, cli.RESET, host, port)
-	return http.ListenAndServe(fmt.Sprintf("%s:%d", host, port), c.Handler(s.router))
+	log.Info(fmt.Sprintf("%s server started listening on port <%d>", s.conf.Protocol, s.conf.Port))
+	return http.ListenAndServe(fmt.Sprintf("%s:%d", c.Host, c.Port), cor.Handler(s.router))
 }

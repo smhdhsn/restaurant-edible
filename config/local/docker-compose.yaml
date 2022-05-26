@@ -8,11 +8,13 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "true"
       MYSQL_USER: restaurant_menu
       MYSQL_PASSWORD: restaurant_menu
-      MYSQL_DATABASE: restaurant_menu
+      MYSQL_DATABASE: menu
     ports:
-      - 3306:3306
+      - 4002:3306
+    expose:
+      - 4002
     volumes:
-      - restaurant:/var/lib/mysql
+      - menu:/var/lib/mysql
     restart: on-failure
 
   app:
@@ -23,7 +25,9 @@ services:
     environment:
       APP_ENV: $APP_ENV
     ports:
-      - 9000:80
+      - 9002:80
+    expose:
+      - 9002
     networks:
       - restaurant
     depends_on:
@@ -36,5 +40,5 @@ networks:
     name: restaurant
 
 volumes:
-  restaurant:
-    name: restaurant
+  menu:
+    name: restaurant_menu
