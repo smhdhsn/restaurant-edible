@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"os"
 
 	"github.com/pkg/errors"
@@ -14,6 +13,8 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
 	"github.com/smhdhsn/restaurant-menu/internal/service"
+
+	log "github.com/smhdhsn/restaurant-menu/internal/logger"
 )
 
 // RecipeSchema holds schema for recipe JSON.

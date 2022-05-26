@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 
 	"github.com/smhdhsn/restaurant-menu/internal/config"
@@ -10,6 +8,8 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/repository"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
 	"github.com/smhdhsn/restaurant-menu/internal/service"
+
+	log "github.com/smhdhsn/restaurant-menu/internal/logger"
 )
 
 // This section holds the items to be cleaned up from inventory.

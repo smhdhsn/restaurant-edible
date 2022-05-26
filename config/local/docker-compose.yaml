@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     restart: on-failure
-    command: "/app/api"
+    command: "/app/server"
 
 networks:
   food:

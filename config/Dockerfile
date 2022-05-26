@@ -18,7 +18,7 @@ FROM debian:bullseye
 
 COPY --from=binary /build/config/ /app/config/
 COPY --from=binary /build/sample/ /app/sample/
-COPY --from=binary /build/command /build/api /app/
+COPY --from=binary /build/command /build/server /app/
 
 WORKDIR /app
 

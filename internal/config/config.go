@@ -8,16 +8,15 @@ import (
 )
 
 // envVar holds the environment variable for application's mode.
-const envVar = "APP_ENV"
+const envVar = "APP_MODE"
 
 // defaultMode holds the default configuration file's name.
 const defaultMode = "local"
 
 // Config holds the application's configurations.
 type Config struct {
-	Server    ServerConf `yaml:"server"`
-	DB        DBConf     `yaml:"db"`
-	ClientURI []string   `yaml:"client_uri"`
+	Server ServerConf `yaml:"server"`
+	DB     DBConf     `yaml:"db"`
 }
 
 // LoadConf loads configuration files from yaml file.
@@ -37,7 +36,7 @@ func readFile(c *Config) error {
 		mode = m
 	}
 
-	f, err := os.Open(path.Join("./config", mode+".yml"))
+	f, err := os.Open(path.Join("./config/", mode, "/config.yaml"))
 	if err != nil {
 		return err
 	}
