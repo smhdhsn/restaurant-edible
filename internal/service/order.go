@@ -14,10 +14,10 @@ type OrderServ struct {
 }
 
 // NewOrderService creates an order service with it's dependencies.
-func NewOrderService(fRepo repositoryContract.FoodRepository, iRepo repositoryContract.InventoryRepository) serviceContract.OrderService {
+func NewOrderService(fr repositoryContract.FoodRepository, ir repositoryContract.InventoryRepository) serviceContract.OrderService {
 	return &OrderServ{
-		fRepo: fRepo,
-		iRepo: iRepo,
+		fRepo: fr,
+		iRepo: ir,
 	}
 }
 

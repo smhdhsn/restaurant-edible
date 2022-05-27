@@ -28,7 +28,7 @@ func New(c *config.ServerConf, mRes *resource.MenuResource) (*Server, error) {
 	apiGroup.
 		Methods(http.MethodGet).
 		Path("/menu").
-		HandlerFunc(mRes.SourceHandler.List)
+		HandlerFunc(mRes.MenuHandler.GetMenu)
 
 	return &Server{
 		mRes:   mRes,

@@ -16,10 +16,10 @@ type InventoryServ struct {
 }
 
 // NewInventoryService creates an inventory service with it's dependencies.
-func NewInventoryService(iRepo repositoryContract.InventoryRepository, cRepo repositoryContract.ComponentRepository) serviceContract.InventoryService {
+func NewInventoryService(ir repositoryContract.InventoryRepository, cr repositoryContract.ComponentRepository) serviceContract.InventoryService {
 	return &InventoryServ{
-		iRepo: iRepo,
-		cRepo: cRepo,
+		iRepo: ir,
+		cRepo: cr,
 	}
 }
 

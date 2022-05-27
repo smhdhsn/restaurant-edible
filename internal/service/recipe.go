@@ -15,8 +15,8 @@ type RecipeServ struct {
 }
 
 // NewRecipeService creates a recipe service with it's dependencies.
-func NewRecipeService(fRepo repositoryContract.FoodRepository) serviceContract.RecipeService {
-	return &RecipeServ{fRepo: fRepo}
+func NewRecipeService(fr repositoryContract.FoodRepository) serviceContract.RecipeService {
+	return &RecipeServ{fRepo: fr}
 }
 
 // CreateRecipe stores couple of sample recipes inside database.

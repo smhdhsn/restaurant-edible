@@ -13,8 +13,8 @@ type MenuServ struct {
 }
 
 // NewMenuService creates a menu service with it's dependencies.
-func NewMenuService(fRepo repositoryContract.FoodRepository) serviceContract.MenuService {
-	return &MenuServ{fRepo: fRepo}
+func NewMenuService(fr repositoryContract.FoodRepository) serviceContract.MenuService {
+	return &MenuServ{fRepo: fr}
 }
 
 // List is responsible for fetching available meals from database.

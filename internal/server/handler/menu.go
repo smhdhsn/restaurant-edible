@@ -14,22 +14,22 @@ type MenuResp struct {
 	Title string `json:"title"`
 }
 
-// MenuSourceHandler contains services that can be used within source handler.
-type MenuSourceHandler struct {
+// MenuHandler contains services that can be used within menu handler.
+type MenuHandler struct {
 	mServ serviceContract.MenuService
 	res   *helper.RespBody
 }
 
-// NewMenuSourceHandler creates a new menu handler.
-func NewMenuSourceHandler(m serviceContract.MenuService) *MenuSourceHandler {
-	return &MenuSourceHandler{
-		mServ: m,
+// NewMenuHandler creates a new menu handler.
+func NewMenuHandler(ms serviceContract.MenuService) *MenuHandler {
+	return &MenuHandler{
+		mServ: ms,
 		res:   &helper.RespBody{},
 	}
 }
 
 // GetMenu is responsible for getting menu with available food.
-func (h *MenuSourceHandler) GetMenu(w http.ResponseWriter, r *http.Request) {
+func (h *MenuHandler) GetMenu(w http.ResponseWriter, r *http.Request) {
 	iList, err := h.mServ.List()
 	if err != nil {
 		h.res.

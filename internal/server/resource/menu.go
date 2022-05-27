@@ -6,12 +6,16 @@ import (
 
 // MenuResource holds menu resource's handlers.
 type MenuResource struct {
-	SourceHandler *handler.MenuSourceHandler
+	MenuHandler      *handler.MenuHandler
+	RecipeHandler    *handler.RecipeHandler
+	InventoryHandler *handler.InventoryHandler
 }
 
 // NewMenuResource creates a new menu resource with all handlers within itself.
-func NewMenuResource(source *handler.MenuSourceHandler) *MenuResource {
+func NewMenuResource(mh *handler.MenuHandler, rh *handler.RecipeHandler, ih *handler.InventoryHandler) *MenuResource {
 	return &MenuResource{
-		SourceHandler: source,
+		MenuHandler:      mh,
+		RecipeHandler:    rh,
+		InventoryHandler: ih,
 	}
 }

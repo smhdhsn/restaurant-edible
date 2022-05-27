@@ -35,13 +35,17 @@ func main() {
 	// instantiate models.
 	fModel := new(model.Food)
 	iModel := new(model.Inventory)
+	cModel := new(model.Component)
 
 	// instantiate repositories.
 	fRepo := mysql.NewFoodRepository(dbConn, *fModel)
-	_ = mysql.NewInventoryRepository(dbConn, *iModel)
+	iRepo := mysql.NewInventoryRepository(dbConn, *iModel)
+	cRepo := mysql.NewComponentRepository(dbConn, *cModel)
 
 	// instantiate services.
-	m := service.NewMenuService(fRepo)
+	mServ := service.NewMenuService(fRepo)
+	rServ := service.NewRecipeService(fRepo)
+	iServ := service.NewInventoryService(iRepo, cRepo)
 
 	/*
 		recipe
@@ -57,10 +61,12 @@ func main() {
 	*/
 
 	// instantiate handlers.
-	mSourceHandler := handler.NewMenuSourceHandler(m)
+	mHandler := handler.NewMenuHandler(mServ)
+	rHandler := handler.NewRecipeHandler(rServ)
+	iHandler := handler.NewInventoryHandler(iServ)
 
 	// instantiate resources.
-	mRes := resource.NewMenuResource(mSourceHandler)
+	mRes := resource.NewMenuResource(mHandler, rHandler, iHandler)
 
 	// instantiate gRPC server.
 	s, err := server.New(&conf.Server, mRes)
