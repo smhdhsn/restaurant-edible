@@ -5,14 +5,14 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/smhdhsn/restaurant-menu/internal/config"
-	"github.com/smhdhsn/restaurant-menu/internal/db"
-	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
+	"github.com/smhdhsn/restaurant-edible/internal/config"
+	"github.com/smhdhsn/restaurant-edible/internal/db"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-edible/internal/service"
 
-	log "github.com/smhdhsn/restaurant-menu/internal/logger"
-	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+	log "github.com/smhdhsn/restaurant-edible/internal/logger"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 var (

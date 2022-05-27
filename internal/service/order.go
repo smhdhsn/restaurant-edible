@@ -3,8 +3,8 @@ package service
 import (
 	"github.com/pkg/errors"
 
-	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
-	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 // OrderServ contains repositories that will be used within this service.

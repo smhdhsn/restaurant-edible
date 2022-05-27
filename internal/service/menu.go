@@ -1,10 +1,10 @@
 package service
 
 import (
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 
-	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
-	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 // MenuServ contains repositories that will be used within this service.

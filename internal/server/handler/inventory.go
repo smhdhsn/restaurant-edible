@@ -1,7 +1,7 @@
 package handler
 
 import (
-	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 // InventoryHandler contains services that can be used within inventory handler.

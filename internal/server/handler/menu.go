@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/smhdhsn/restaurant-menu/internal/server/helper"
+	"github.com/smhdhsn/restaurant-edible/internal/server/helper"
 
-	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 // MenuResp is the response schema of the menu API.

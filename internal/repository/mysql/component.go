@@ -3,9 +3,9 @@ package mysql
 import (
 	"gorm.io/gorm"
 
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 
-	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 )
 
 // ComponentRepo contains repository's database connection.

@@ -1,7 +1,7 @@
 package contract
 
 import (
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 )
 
 // FoodRepository is the interface representing food repository or it's mock.

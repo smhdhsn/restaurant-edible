@@ -4,8 +4,8 @@ server:
   port: 80
 
 db:
-  host: "restaurant_menu_db"
+  host: "restaurant_edible_db"
   port: 3306
-  name: "menu"
-  user: "restaurant_menu"
-  pass: "restaurant_menu"
+  name: "edible"
+  user: "restaurant_edible"
+  pass: "restaurant_edible"

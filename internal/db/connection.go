@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/smhdhsn/restaurant-menu/internal/config"
+	"github.com/smhdhsn/restaurant-edible/internal/config"
 )
 
 // Connect creates a database connection.

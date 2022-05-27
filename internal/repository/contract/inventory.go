@@ -1,7 +1,7 @@
 package contract
 
 import (
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 )
 
 // RecycleReq is the struct responsible for telling the service which items to clean up from inventory.

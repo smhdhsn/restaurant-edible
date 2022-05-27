@@ -32,5 +32,5 @@ fi
 
 DOCKER_BUILDKIT=1 docker-compose \
     --file $composeFile \
-    --project-name restaurant_menu \
+    --project-name restaurant_edible \
     up -d --build

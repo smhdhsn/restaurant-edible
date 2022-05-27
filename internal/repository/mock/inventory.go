@@ -3,9 +3,9 @@ package mock
 import (
 	"github.com/stretchr/testify/mock"
 
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 
-	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 )
 
 // InventoryRepo is inventory repository's mock.

@@ -1,27 +1,27 @@
 services:
   db:
     image: mysql:8
-    container_name: restaurant_menu_db
+    container_name: restaurant_edible_db
     networks:
       - restaurant
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "true"
-      MYSQL_USER: restaurant_menu
-      MYSQL_PASSWORD: restaurant_menu
-      MYSQL_DATABASE: menu
+      MYSQL_USER: restaurant_edible
+      MYSQL_PASSWORD: restaurant_edible
+      MYSQL_DATABASE: edible
     ports:
       - 4002:3306
     expose:
       - 4002
     volumes:
-      - menu:/var/lib/mysql
+      - edible:/var/lib/mysql
     restart: on-failure
 
   app:
     build:
       context: ../../
       dockerfile: config/Dockerfile
-    container_name: restaurant_menu_app
+    container_name: restaurant_edible_app
     environment:
       APP_ENV: $APP_ENV
     ports:
@@ -40,5 +40,5 @@ networks:
     name: restaurant
 
 volumes:
-  menu:
-    name: restaurant_menu
+  edible:
+    name: restaurant_edible

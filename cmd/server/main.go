@@ -1,16 +1,16 @@
 package main
 
 import (
-	"github.com/smhdhsn/restaurant-menu/internal/config"
-	"github.com/smhdhsn/restaurant-menu/internal/db"
-	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
-	"github.com/smhdhsn/restaurant-menu/internal/server"
-	"github.com/smhdhsn/restaurant-menu/internal/server/handler"
-	"github.com/smhdhsn/restaurant-menu/internal/server/resource"
-	"github.com/smhdhsn/restaurant-menu/internal/service"
+	"github.com/smhdhsn/restaurant-edible/internal/config"
+	"github.com/smhdhsn/restaurant-edible/internal/db"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-edible/internal/server"
+	"github.com/smhdhsn/restaurant-edible/internal/server/handler"
+	"github.com/smhdhsn/restaurant-edible/internal/server/resource"
+	"github.com/smhdhsn/restaurant-edible/internal/service"
 
-	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	log "github.com/smhdhsn/restaurant-edible/internal/logger"
 )
 
 // main is the main application entry.
@@ -66,10 +66,10 @@ func main() {
 	iHandler := handler.NewInventoryHandler(iServ)
 
 	// instantiate resources.
-	mRes := resource.NewMenuResource(mHandler, rHandler, iHandler)
+	eRes := resource.NewEdibleResource(mHandler, rHandler, iHandler)
 
 	// instantiate gRPC server.
-	s, err := server.New(&conf.Server, mRes)
+	s, err := server.New(&conf.Server, eRes)
 	if err != nil {
 		log.Fatal(err)
 	}

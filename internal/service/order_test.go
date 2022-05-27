@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository/mock"
-	"github.com/smhdhsn/restaurant-menu/util/random"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/repository/mock"
+	"github.com/smhdhsn/restaurant-edible/util/random"
 )
 
 func TestOrderFood(t *testing.T) {

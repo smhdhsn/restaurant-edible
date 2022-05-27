@@ -3,7 +3,7 @@ package mock
 import (
 	"github.com/stretchr/testify/mock"
 
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 )
 
 // ComponentRepo is component repository's mock.

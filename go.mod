@@ -1,4 +1,4 @@
-module github.com/smhdhsn/restaurant-menu
+module github.com/smhdhsn/restaurant-edible
 
 go 1.18
 

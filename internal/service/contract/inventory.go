@@ -3,7 +3,7 @@ package contract
 import (
 	"time"
 
-	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 )
 
 // InventoryService is the interface that inventory service must implement.

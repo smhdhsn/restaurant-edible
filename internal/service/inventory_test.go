@@ -5,12 +5,12 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/smhdhsn/restaurant-menu/internal/model"
-	"github.com/smhdhsn/restaurant-menu/internal/repository/mock"
-	"github.com/smhdhsn/restaurant-menu/util/random"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/repository/mock"
+	"github.com/smhdhsn/restaurant-edible/util/random"
 
-	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
-	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 func TestBuyComponents(t *testing.T) {

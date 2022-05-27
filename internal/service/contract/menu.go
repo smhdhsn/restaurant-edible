@@ -1,7 +1,7 @@
 package contract
 
 import (
-	"github.com/smhdhsn/restaurant-menu/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 )
 
 // MenuService is the interface that menu service must implement.

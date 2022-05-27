@@ -7,31 +7,31 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 
-	"github.com/smhdhsn/restaurant-menu/internal/config"
-	"github.com/smhdhsn/restaurant-menu/internal/server/resource"
+	"github.com/smhdhsn/restaurant-edible/internal/config"
+	"github.com/smhdhsn/restaurant-edible/internal/server/resource"
 
-	log "github.com/smhdhsn/restaurant-menu/internal/logger"
+	log "github.com/smhdhsn/restaurant-edible/internal/logger"
 )
 
 // Server contains server's services.
 type Server struct {
-	mRes   *resource.MenuResource
+	eRes   *resource.EdibleResource
 	conf   *config.ServerConf
 	router *mux.Router
 }
 
 // New creates a new http server.
-func New(c *config.ServerConf, mRes *resource.MenuResource) (*Server, error) {
+func New(c *config.ServerConf, eRes *resource.EdibleResource) (*Server, error) {
 	r := mux.NewRouter().StrictSlash(true)
 
 	apiGroup := r.PathPrefix("/api").Subrouter()
 	apiGroup.
 		Methods(http.MethodGet).
 		Path("/menu").
-		HandlerFunc(mRes.MenuHandler.GetMenu)
+		HandlerFunc(eRes.MenuHandler.GetMenu)
 
 	return &Server{
-		mRes:   mRes,
+		eRes:   eRes,
 		conf:   c,
 		router: r,
 	}, nil

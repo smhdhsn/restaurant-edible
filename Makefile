@@ -1,13 +1,13 @@
 up:
 	./script/docker_up.sh $(APP_MODE)
 bash:
-	docker exec -it restaurant_menu_app bash
+	docker exec -it restaurant_edible_app bash
 buy:
-	docker exec restaurant_menu_app ./command buy
+	docker exec restaurant_edible_app ./command buy
 recipe:
-	docker exec restaurant_menu_app ./command recipe -j sample/recipes.json
+	docker exec restaurant_edible_app ./command recipe -j sample/recipes.json
 recycle:
-	docker exec restaurant_menu_app ./command recycle -fe
+	docker exec restaurant_edible_app ./command recycle -fe
 server:
 	go build -o $(BIN_DIR)/ ./cmd/server
 command:
