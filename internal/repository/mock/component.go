@@ -12,11 +12,11 @@ type ComponentRepo struct {
 }
 
 // GetUnavailable is a mocked method in mocked component repository.
-func (r *ComponentRepo) GetUnavailable() ([]*model.Component, error) {
+func (r *ComponentRepo) GetUnavailable() ([]*model.ComponentDTO, error) {
 	args := r.Mock.Called()
 
 	if v := args.Get(0); v != nil {
-		return v.([]*model.Component), nil
+		return v.([]*model.ComponentDTO), nil
 	}
 
 	return nil, args.Error(1)

@@ -18,6 +18,6 @@ func NewMenuService(fr repositoryContract.FoodRepository) serviceContract.MenuSe
 }
 
 // List is responsible for fetching available meals from database.
-func (s *MenuServ) List() ([]*model.Food, error) {
+func (s *MenuServ) List() ([]*model.FoodDTO, error) {
 	return s.fRepo.GetAvailable()
 }

@@ -6,6 +6,6 @@ import (
 
 // FoodRepository is the interface representing food repository or it's mock.
 type FoodRepository interface {
-	GetAvailable() ([]*model.Food, error)
-	BatchInsert([]*model.Food) error
+	GetAvailable() ([]*model.FoodDTO, error)
+	BatchInsert([]*model.FoodDTO) error
 }

@@ -45,20 +45,7 @@ func main() {
 	// instantiate services.
 	mServ := service.NewMenuService(fRepo)
 	rServ := service.NewRecipeService(fRepo)
-	iServ := service.NewInventoryService(iRepo, cRepo)
-
-	/*
-		recipe
-			CreateRecipe(fList []*model.Food) error
-
-		menu
-			GetFoods() ([]*model.Food, error) -> GetMenu()
-
-		inventory
-			BuyComponents(*BuyComponentsReq) error -> Buy()
-			Recycle(iRepoContract.RecycleReq) error
-			OrderFood(foodID uint32) (bool, error) -> Use()
-	*/
+	iServ := service.NewInventoryService(iRepo, cRepo, fRepo)
 
 	// instantiate handlers.
 	mHandler := handler.NewMenuHandler(mServ)
@@ -75,7 +62,7 @@ func main() {
 	}
 
 	// listen and serve.
-	if err := s.Listen(&conf.Server); err != nil {
+	if err := s.Listen(); err != nil {
 		log.Fatal(err)
 	}
 }

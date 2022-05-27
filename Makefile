@@ -2,15 +2,14 @@ up:
 	./script/docker_up.sh $(APP_MODE)
 bash:
 	docker exec -it restaurant_edible_app bash
-buy:
-	docker exec restaurant_edible_app ./command buy
-recipe:
-	docker exec restaurant_edible_app ./command recipe -j sample/recipes.json
-recycle:
-	docker exec restaurant_edible_app ./command recycle -fe
-server:
+build_server:
 	go build -o $(BIN_DIR)/ ./cmd/server
-command:
-	go build -o $(BIN_DIR)/ ./cmd/command
-build_all: server command
-.PHONY: up bash buy recipe recycle server command build_all 
+build_all: build_server
+proto_menu:
+	protoc protos/edible/menu/*.proto --go_out=plugins=grpc:internal/
+proto_recipe:
+	protoc protos/edible/recipe/*.proto --go_out=plugins=grpc:internal/
+proto_inventory:
+	protoc protos/edible/inventory/*.proto --go_out=plugins=grpc:internal/
+proto_all: proto_menu proto_recipe proto_inventory
+.PHONY: up bash build_server build_all proto_menu proto_recipe proto_inventory proto_all

@@ -6,5 +6,5 @@ import (
 
 // ComponentRepository is the interface representing component repository or it's mock.
 type ComponentRepository interface {
-	GetUnavailable() ([]*model.Component, error)
+	GetUnavailable() ([]*model.ComponentDTO, error)
 }

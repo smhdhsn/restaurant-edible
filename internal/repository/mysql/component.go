@@ -23,10 +23,11 @@ func NewComponentRepository(db *gorm.DB, m model.Component) repositoryContract.C
 }
 
 // GetUnavailable is responsible for getting food components that are not avaiable.
-func (r *ComponentRepo) GetUnavailable() ([]*model.Component, error) {
-	result := make([]*model.Component, 0)
+func (r *ComponentRepo) GetUnavailable() ([]*model.ComponentDTO, error) {
+	result := make([]*model.ComponentDTO, 0)
 
 	tx := r.db.
+		Model(r.model).
 		Table("components AS c").
 		Where(
 			"c.id NOT IN (?)",

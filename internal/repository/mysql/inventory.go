@@ -28,29 +28,29 @@ func NewInventoryRepository(db *gorm.DB, m model.Inventory) repositoryContract.I
 }
 
 // Buy is responsible for buying food components for the inventory, if components' stock are finished or expired.
-func (r *InventoryRepo) Buy(iList []*model.Inventory) error {
-	return r.db.Model(&model.Inventory{}).CreateInBatches(iList, 100).Error
+func (r *InventoryRepo) Buy(iListDTO []*model.InventoryDTO) error {
+	return r.db.Model(r.model).CreateInBatches(iListDTO, 100).Error
 }
 
-// Clean is responsible for cleaning up inventory from useless items.
-func (r *InventoryRepo) Clean(req repositoryContract.RecycleReq) error {
+// Recycle is responsible for cleaning up inventory from useless items.
+func (r *InventoryRepo) Recycle(finished, expired bool) error {
 	return r.db.
 		Table("inventories AS i").
-		Where("i.expires_at < ? AND ?", time.Now(), req.Expired).
-		Or("i.stock = 0  AND ?", req.Finished).
-		Delete(&model.Inventory{}).
+		Where("i.expires_at < ? AND ?", time.Now(), expired).
+		Or("i.stock = 0  AND ?", finished).
+		Delete(r.model).
 		Error
 }
 
 // Use decreases food components' stock from inventory.
-func (r *InventoryRepo) Use(foodID uint32) error {
+func (r *InventoryRepo) Use(fDTO *model.FoodDTO) error {
 	return r.db.
 		Table("inventories AS i").
 		Where("i.expires_at > ?", time.Now()).
 		Where("i.stock > 0").
 		Where(
 			"i.component_id IN (?)",
-			componentsOfFood(r.db, foodID),
+			componentsOfFood(r.db, fDTO.ID),
 		).
 		Update("i.stock", gorm.Expr("i.stock - ?", decrBy)).
 		Error

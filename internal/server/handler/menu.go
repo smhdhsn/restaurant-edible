@@ -1,54 +1,50 @@
 package handler
 
 import (
-	"net/http"
+	"context"
+	"errors"
 
-	"github.com/smhdhsn/restaurant-edible/internal/server/helper"
-
+	empb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
+	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
-
-// MenuResp is the response schema of the menu API.
-type MenuResp struct {
-	ID    uint32 `json:"id"`
-	Title string `json:"title"`
-}
 
 // MenuHandler contains services that can be used within menu handler.
 type MenuHandler struct {
-	mServ serviceContract.MenuService
-	res   *helper.RespBody
+	menuServ serviceContract.MenuService
 }
 
 // NewMenuHandler creates a new menu handler.
-func NewMenuHandler(ms serviceContract.MenuService) *MenuHandler {
+func NewMenuHandler(ms serviceContract.MenuService) empb.MenuServiceServer {
 	return &MenuHandler{
-		mServ: ms,
-		res:   &helper.RespBody{},
+		menuServ: ms,
 	}
 }
 
-// GetMenu is responsible for getting menu with available food.
-func (h *MenuHandler) GetMenu(w http.ResponseWriter, r *http.Request) {
-	iList, err := h.mServ.List()
+// List is responsible for getting menu.
+func (s *MenuHandler) List(ctx context.Context, req *empb.MenuListRequest) (*empb.MenuListResponse, error) {
+	fListDTO, err := s.menuServ.List()
 	if err != nil {
-		h.res.
-			SetError(err).
-			SetMessage("failed to get menu").
-			Json(w, http.StatusBadRequest)
+		if errors.Is(err, repositoryContract.ErrRecordNotFound) {
+			return nil, status.Error(codes.NotFound, err.Error())
+		}
 
-		return
+		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	transform := make([]MenuResp, 0)
-	for _, i := range iList {
-		transform = append(transform, MenuResp{
-			ID:    i.ID,
-			Title: i.Title,
-		})
+	fList := make([]*empb.Food, len(fListDTO))
+	for i, f := range fListDTO {
+		fList[i] = &empb.Food{
+			Id:    f.ID,
+			Title: f.Title,
+		}
 	}
 
-	h.res.
-		SetData(transform).
-		Json(w, http.StatusOK)
+	resp := &empb.MenuListResponse{
+		Foods: fList,
+	}
+
+	return resp, nil
 }

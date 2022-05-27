@@ -1,6 +1,8 @@
 package service
 
 import (
+	"time"
+
 	"github.com/pkg/errors"
 
 	"github.com/smhdhsn/restaurant-edible/internal/model"
@@ -13,18 +15,24 @@ import (
 type InventoryServ struct {
 	iRepo repositoryContract.InventoryRepository
 	cRepo repositoryContract.ComponentRepository
+	fRepo repositoryContract.FoodRepository
 }
 
 // NewInventoryService creates an inventory service with it's dependencies.
-func NewInventoryService(ir repositoryContract.InventoryRepository, cr repositoryContract.ComponentRepository) serviceContract.InventoryService {
+func NewInventoryService(
+	ir repositoryContract.InventoryRepository,
+	cr repositoryContract.ComponentRepository,
+	fr repositoryContract.FoodRepository,
+) serviceContract.InventoryService {
 	return &InventoryServ{
 		iRepo: ir,
 		cRepo: cr,
+		fRepo: fr,
 	}
 }
 
-// BuyComponents is responsible for buying food components for the inventory, if components' stock are finished or expired.
-func (s *InventoryServ) BuyComponents(req *serviceContract.BuyComponentsReq) error {
+// Buy is responsible for buying food components for the inventory, if components' stock are finished or expired.
+func (s *InventoryServ) Buy(stock uint32, expiresAt time.Time) error {
 	cList, err := s.cRepo.GetUnavailable()
 	if err != nil {
 		return errors.Wrap(err, "failed to get unavailable components")
@@ -34,17 +42,16 @@ func (s *InventoryServ) BuyComponents(req *serviceContract.BuyComponentsReq) err
 		return nil
 	}
 
-	iList := make([]*model.Inventory, 0)
-	for _, c := range cList {
-		iList = append(iList, &model.Inventory{
+	iListDTO := make([]*model.InventoryDTO, len(cList))
+	for i, c := range cList {
+		iListDTO[i] = &model.InventoryDTO{
 			ComponentID: c.ID,
-			Stock:       req.StockAmount,
-			BestBefore:  req.BestBefore,
-			ExpiresAt:   req.ExpiresAt,
-		})
+			Stock:       stock,
+			ExpiresAt:   expiresAt,
+		}
 	}
 
-	err = s.iRepo.Buy(iList)
+	err = s.iRepo.Buy(iListDTO)
 	if err != nil {
 		return errors.Wrap(err, "failed to buy components")
 	}
@@ -52,7 +59,34 @@ func (s *InventoryServ) BuyComponents(req *serviceContract.BuyComponentsReq) err
 	return nil
 }
 
+// GetFood is responsible for fetching available meals from database.
+func (s *InventoryServ) Use(fDTO *model.FoodDTO) error {
+	foods, err := s.fRepo.GetAvailable()
+	if err != nil {
+		return errors.Wrap(err, "failed to get available foods")
+	}
+
+	var isAvailable bool
+	for _, f := range foods {
+		if f.ID == fDTO.ID {
+			isAvailable = true
+			break
+		}
+	}
+
+	if !isAvailable {
+		return errors.New("requested order cannot be fulfilled because of the lack of components")
+	}
+
+	err = s.iRepo.Use(fDTO)
+	if err != nil {
+		return errors.Wrap(err, "failed to use components")
+	}
+
+	return nil
+}
+
 // Recycle is responsible for cleaning up the inventory from useless items.
-func (s *InventoryServ) Recycle(req repositoryContract.RecycleReq) error {
-	return s.iRepo.Clean(req)
+func (s *InventoryServ) Recycle(finished, expired bool) error {
+	return s.iRepo.Recycle(finished, expired)
 }

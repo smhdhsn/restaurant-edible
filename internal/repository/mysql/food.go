@@ -23,11 +23,11 @@ func NewFoodRepository(db *gorm.DB, m model.Food) repositoryContract.FoodReposit
 }
 
 // GetAvailable gets foods that their components are available.
-func (r *FoodRepo) GetAvailable() ([]*model.Food, error) {
-	result := make([]*model.Food, 0)
+func (r *FoodRepo) GetAvailable() ([]*model.FoodDTO, error) {
+	result := make([]*model.FoodDTO, 0)
 
 	tx := r.db.
-		Table("foods AS f").
+		Model(r.model).
 		Where(
 			"f.id NOT IN (?)",
 			unavailableFoods(r.db),
@@ -38,9 +38,9 @@ func (r *FoodRepo) GetAvailable() ([]*model.Food, error) {
 }
 
 // BatchInsert is responsible for storing a chunk of data inside database.
-func (r *FoodRepo) BatchInsert(fList []*model.Food) error {
+func (r *FoodRepo) BatchInsert(fListDTO []*model.FoodDTO) error {
 	return r.db.Transaction(func(tx *gorm.DB) error {
-		for _, f := range fList {
+		for _, f := range fListDTO {
 			for _, c := range f.Components {
 				if err := tx.Where(model.Component{Title: c.Title}).FirstOrCreate(&c).Error; err != nil {
 					return err

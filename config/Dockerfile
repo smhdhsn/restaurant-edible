@@ -17,8 +17,7 @@ RUN make build_all BIN_DIR=/build
 FROM debian:bullseye
 
 COPY --from=binary /build/config/ /app/config/
-COPY --from=binary /build/sample/ /app/sample/
-COPY --from=binary /build/command /build/server /app/
+COPY --from=binary /build/server /app/
 
 WORKDIR /app
 

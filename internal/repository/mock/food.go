@@ -12,18 +12,18 @@ type FoodRepo struct {
 }
 
 // GetAvailable is a mocked method in mocked food repository.
-func (r *FoodRepo) GetAvailable() ([]*model.Food, error) {
+func (r *FoodRepo) GetAvailable() ([]*model.FoodDTO, error) {
 	args := r.Mock.Called()
 
 	if v := args.Get(0); v != nil {
-		return v.([]*model.Food), nil
+		return v.([]*model.FoodDTO), nil
 	}
 
 	return nil, args.Error(1)
 }
 
 // BatchInert is a mocked method in mocked food repository.
-func (r *FoodRepo) BatchInsert(fList []*model.Food) error {
+func (r *FoodRepo) BatchInsert(fList []*model.FoodDTO) error {
 	args := r.Mock.Called(fList)
 
 	return args.Error(0)

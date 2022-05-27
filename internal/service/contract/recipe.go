@@ -6,5 +6,5 @@ import (
 
 // RecipeService is the interface that recipe service must implement.
 type RecipeService interface {
-	CreateRecipe(fList []*model.Food) error
+	Store(fListDTO []*model.FoodDTO) error
 }

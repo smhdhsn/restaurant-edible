@@ -3,18 +3,12 @@ package contract
 import (
 	"time"
 
-	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/model"
 )
 
 // InventoryService is the interface that inventory service must implement.
 type InventoryService interface {
-	BuyComponents(*BuyComponentsReq) error
-	Recycle(repositoryContract.RecycleReq) error
-}
-
-// BuyComponentsReq holds the details of buyed stocks.
-type BuyComponentsReq struct {
-	StockAmount uint32
-	BestBefore  time.Time
-	ExpiresAt   time.Time
+	Buy(uint32, time.Time) error
+	Use(*model.FoodDTO) error
+	Recycle(bool, bool) error
 }
