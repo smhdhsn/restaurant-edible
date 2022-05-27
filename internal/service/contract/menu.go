@@ -1,4 +1,4 @@
-package menu
+package contract
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"
@@ -6,5 +6,5 @@ import (
 
 // MenuService is the interface that menu service must implement.
 type MenuService interface {
-	GetFoods() ([]*model.Food, error)
+	List() ([]*model.Food, error)
 }

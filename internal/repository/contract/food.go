@@ -1,4 +1,4 @@
-package food
+package contract
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"

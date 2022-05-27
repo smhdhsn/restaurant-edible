@@ -1,4 +1,4 @@
-package inventory
+package service
 
 import (
 	"testing"
@@ -9,8 +9,8 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mock"
 	"github.com/smhdhsn/restaurant-menu/util/random"
 
-	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
-	iServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/inventory"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
+	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
 )
 
 func TestBuyComponents(t *testing.T) {
@@ -36,13 +36,13 @@ func TestBuyComponents(t *testing.T) {
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Buy", []*model.Inventory{&i}).Return(nil)
 
-	req := iServContract.BuyComponentsReq{
+	req := serviceContract.BuyComponentsReq{
 		StockAmount: randStock,
 		BestBefore:  randBestBefore,
 		ExpiresAt:   randExpiresAt,
 	}
 
-	sut := NewInventoryServ(iRepoMock, cRepoMock)
+	sut := NewInventoryService(iRepoMock, cRepoMock)
 
 	// Act
 	err := sut.BuyComponents(&req)
@@ -56,7 +56,7 @@ func TestRecycle(t *testing.T) {
 	randFinished := random.GenerateBool()
 	randExpired := random.GenerateBool()
 
-	req := iRepoContract.RecycleReq{
+	req := repositoryContract.RecycleReq{
 		Finished: randFinished,
 		Expired:  randExpired,
 	}
@@ -64,7 +64,7 @@ func TestRecycle(t *testing.T) {
 	iRepoMock := new(mock.InventoryRepo)
 	iRepoMock.On("Clean", req).Return(nil)
 
-	sut := NewInventoryServ(iRepoMock, nil)
+	sut := NewInventoryService(iRepoMock, nil)
 
 	// Act
 	err := sut.Recycle(req)

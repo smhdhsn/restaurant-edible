@@ -3,19 +3,18 @@ package service
 import (
 	"github.com/pkg/errors"
 
-	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
-	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
-	oServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/order"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
+	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
 )
 
 // OrderServ contains repositories that will be used within this service.
 type OrderServ struct {
-	fRepo fRepoContract.FoodRepository
-	iRepo iRepoContract.InventoryRepository
+	fRepo repositoryContract.FoodRepository
+	iRepo repositoryContract.InventoryRepository
 }
 
-// NewOrderServ creates an order service with it's dependencies.
-func NewOrderServ(fRepo fRepoContract.FoodRepository, iRepo iRepoContract.InventoryRepository) oServContract.OrderService {
+// NewOrderService creates an order service with it's dependencies.
+func NewOrderService(fRepo repositoryContract.FoodRepository, iRepo repositoryContract.InventoryRepository) serviceContract.OrderService {
 	return &OrderServ{
 		fRepo: fRepo,
 		iRepo: iRepo,

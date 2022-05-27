@@ -1,4 +1,4 @@
-package http
+package server
 
 import (
 	"fmt"
@@ -8,56 +8,37 @@ import (
 	"github.com/rs/cors"
 
 	"github.com/smhdhsn/restaurant-menu/internal/config"
+	"github.com/smhdhsn/restaurant-menu/internal/server/resource"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
-	mServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/menu"
-	oServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/order"
 )
 
 // Server contains server's services.
 type Server struct {
-	menu   mServContract.MenuService
-	order  oServContract.OrderService
+	mRes   *resource.MenuResource
 	conf   *config.ServerConf
 	router *mux.Router
 }
 
 // New creates a new http server.
-func New(
-	c *config.ServerConf,
-	mService mServContract.MenuService,
-	oService oServContract.OrderService,
-) (*Server, error) {
+func New(c *config.ServerConf, mRes *resource.MenuResource) (*Server, error) {
 	r := mux.NewRouter().StrictSlash(true)
-
-	oHandler := NewOrderHandler(oService)
-	mHandler := NewMenuHandler(mService)
 
 	apiGroup := r.PathPrefix("/api").Subrouter()
 	apiGroup.
-		Methods(http.MethodPost).
-		Path("/order").
-		HandlerFunc(oHandler.SubmitOrder)
-	apiGroup.
 		Methods(http.MethodGet).
 		Path("/menu").
-		HandlerFunc(mHandler.GetMenu)
+		HandlerFunc(mRes.SourceHandler.List)
 
 	return &Server{
-		mService,
-		oService,
-		c,
-		r,
+		mRes:   mRes,
+		conf:   c,
+		router: r,
 	}, nil
 }
 
 // Listen is responsible for starting the HTTP server.
 func (s *Server) Listen(c *config.ServerConf) error {
-	_, err := config.LoadConf()
-	if err != nil {
-		return err
-	}
-
 	cor := cors.New(cors.Options{
 		AllowedOrigins: []string{},
 		AllowedMethods: []string{

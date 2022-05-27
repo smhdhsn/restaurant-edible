@@ -10,23 +10,28 @@ import (
 	"github.com/smhdhsn/restaurant-menu/util/random"
 )
 
-func TestCreateRecipe(t *testing.T) {
+func TestOrderFood(t *testing.T) {
 	// Arrange
+	randID := random.GenerateUint32(1, 100)
 	randTitle := random.GenerateString(5)
 
-	fList := make([]*model.Food, 0)
-	fList = append(fList, &model.Food{
+	f := model.Food{
+		ID:    randID,
 		Title: randTitle,
-	})
+	}
 
 	fRepoMock := new(mock.FoodRepo)
-	fRepoMock.On("BatchInsert", fList).Return(nil)
+	fRepoMock.On("GetAvailable").Return([]*model.Food{&f}, nil)
 
-	sut := NewRecipeServ(fRepoMock)
+	iRepoMock := new(mock.InventoryRepo)
+	iRepoMock.On("Use", randID).Return(nil)
+
+	sut := NewOrderService(fRepoMock, iRepoMock)
 
 	// Act
-	err := sut.CreateRecipe(fList)
+	status, err := sut.OrderFood(randID)
 
 	// Assert
 	assert.NoError(t, err)
+	assert.True(t, status)
 }

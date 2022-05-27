@@ -1,4 +1,4 @@
-package menu
+package service
 
 import (
 	"testing"
@@ -10,22 +10,23 @@ import (
 	"github.com/smhdhsn/restaurant-menu/util/random"
 )
 
-func TestGetFoods(t *testing.T) {
+func TestCreateRecipe(t *testing.T) {
 	// Arrange
 	randTitle := random.GenerateString(5)
 
-	f := model.Food{
+	fList := make([]*model.Food, 0)
+	fList = append(fList, &model.Food{
 		Title: randTitle,
-	}
-	fRepoMock := new(mock.FoodRepo)
-	fRepoMock.On("GetAvailable").Return([]*model.Food{&f}, nil)
+	})
 
-	sut := NewMenuServ(fRepoMock)
+	fRepoMock := new(mock.FoodRepo)
+	fRepoMock.On("BatchInsert", fList).Return(nil)
+
+	sut := NewRecipeService(fRepoMock)
 
 	// Act
-	fList, err := sut.GetFoods()
+	err := sut.CreateRecipe(fList)
 
 	// Assert
 	assert.NoError(t, err)
-	assert.Contains(t, fList, &f)
 }

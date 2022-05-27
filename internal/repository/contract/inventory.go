@@ -1,4 +1,4 @@
-package inventory
+package contract
 
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/model"

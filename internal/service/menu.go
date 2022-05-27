@@ -1,0 +1,23 @@
+package service
+
+import (
+	"github.com/smhdhsn/restaurant-menu/internal/model"
+
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
+	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
+)
+
+// MenuServ contains repositories that will be used within this service.
+type MenuServ struct {
+	fRepo repositoryContract.FoodRepository
+}
+
+// NewMenuService creates a menu service with it's dependencies.
+func NewMenuService(fRepo repositoryContract.FoodRepository) serviceContract.MenuService {
+	return &MenuServ{fRepo: fRepo}
+}
+
+// List is responsible for fetching available meals from database.
+func (s *MenuServ) List() ([]*model.Food, error) {
+	return s.fRepo.GetAvailable()
+}

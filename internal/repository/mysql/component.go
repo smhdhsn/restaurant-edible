@@ -5,7 +5,7 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 
-	cRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/component"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
 )
 
 // ComponentRepo contains repository's database connection.
@@ -15,7 +15,7 @@ type ComponentRepo struct {
 }
 
 // NewComponentRepo creates an instance of the repository with database connection.
-func NewComponentRepo(db *gorm.DB, m model.Component) cRepoContract.ComponentRepository {
+func NewComponentRepository(db *gorm.DB, m model.Component) repositoryContract.ComponentRepository {
 	return &ComponentRepo{
 		model: m,
 		db:    db,

@@ -1,4 +1,4 @@
-package order
+package contract
 
 // OrderService is the interface that order service must implement.
 type OrderService interface {

@@ -9,10 +9,10 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/db"
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
-	iServContract "github.com/smhdhsn/restaurant-menu/internal/service/contract/inventory"
-	iServ "github.com/smhdhsn/restaurant-menu/internal/service/inventory"
+	serviceContract "github.com/smhdhsn/restaurant-menu/internal/service/contract"
 )
 
 var (
@@ -48,11 +48,11 @@ var buyCMD = &cobra.Command{
 		cModel := new(model.Component)
 
 		// instantiate repositories.
-		iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
-		cRepo := mysql.NewComponentRepo(dbConn, *cModel)
+		iRepo := mysql.NewInventoryRepository(dbConn, *iModel)
+		cRepo := mysql.NewComponentRepository(dbConn, *cModel)
 
 		// instantiate services.
-		i := iServ.NewInventoryServ(iRepo, cRepo)
+		i := service.NewInventoryService(iRepo, cRepo)
 
 		// read amount from cli.
 		a, err := cmd.Flags().GetUint32("amount")
@@ -61,7 +61,7 @@ var buyCMD = &cobra.Command{
 		}
 
 		// create service request.
-		req := iServContract.BuyComponentsReq{
+		req := serviceContract.BuyComponentsReq{
 			StockAmount: a,
 			BestBefore:  bestBefore,
 			ExpiresAt:   expiresAt,

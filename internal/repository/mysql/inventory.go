@@ -7,7 +7,7 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 
-	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
 )
 
 // the amount of items being used with every order submittion.
@@ -20,7 +20,7 @@ type InventoryRepo struct {
 }
 
 // NewInventoryRepo creates an instance of the repository with database connection.
-func NewInventoryRepo(db *gorm.DB, m model.Inventory) iRepoContract.InventoryRepository {
+func NewInventoryRepository(db *gorm.DB, m model.Inventory) repositoryContract.InventoryRepository {
 	return &InventoryRepo{
 		model: m,
 		db:    db,
@@ -33,7 +33,7 @@ func (r *InventoryRepo) Buy(iList []*model.Inventory) error {
 }
 
 // Clean is responsible for cleaning up inventory from useless items.
-func (r *InventoryRepo) Clean(req iRepoContract.RecycleReq) error {
+func (r *InventoryRepo) Clean(req repositoryContract.RecycleReq) error {
 	return r.db.
 		Table("inventories AS i").
 		Where("i.expires_at < ? AND ?", time.Now(), req.Expired).

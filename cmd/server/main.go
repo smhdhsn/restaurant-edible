@@ -3,13 +3,14 @@ package main
 import (
 	"github.com/smhdhsn/restaurant-menu/internal/config"
 	"github.com/smhdhsn/restaurant-menu/internal/db"
-	"github.com/smhdhsn/restaurant-menu/internal/http"
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/server"
+	"github.com/smhdhsn/restaurant-menu/internal/server/handler"
+	"github.com/smhdhsn/restaurant-menu/internal/server/resource"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
-	mServ "github.com/smhdhsn/restaurant-menu/internal/service/menu"
-	oServ "github.com/smhdhsn/restaurant-menu/internal/service/order"
 )
 
 // main is the main application entry.
@@ -36,19 +37,33 @@ func main() {
 	iModel := new(model.Inventory)
 
 	// instantiate repositories.
-	fRepo := mysql.NewFoodRepo(dbConn, *fModel)
-	iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
+	fRepo := mysql.NewFoodRepository(dbConn, *fModel)
+	_ = mysql.NewInventoryRepository(dbConn, *iModel)
 
 	// instantiate services.
-	m := mServ.NewMenuServ(fRepo)
-	o := oServ.NewOrderServ(fRepo, iRepo)
+	m := service.NewMenuService(fRepo)
+
+	/*
+		recipe
+			CreateRecipe(fList []*model.Food) error
+
+		menu
+			GetFoods() ([]*model.Food, error) -> GetMenu()
+
+		inventory
+			BuyComponents(*BuyComponentsReq) error -> Buy()
+			Recycle(iRepoContract.RecycleReq) error
+			OrderFood(foodID uint32) (bool, error) -> Use()
+	*/
 
 	// instantiate handlers.
+	mSourceHandler := handler.NewMenuSourceHandler(m)
 
 	// instantiate resources.
+	mRes := resource.NewMenuResource(mSourceHandler)
 
 	// instantiate gRPC server.
-	s, err := http.New(&conf.Server, m, o)
+	s, err := server.New(&conf.Server, mRes)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -12,9 +12,9 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/db"
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
-	rServ "github.com/smhdhsn/restaurant-menu/internal/service/recipe"
 )
 
 // RecipeSchema holds schema for recipe JSON.
@@ -51,10 +51,10 @@ var recipeCMD = &cobra.Command{
 		fModel := new(model.Food)
 
 		// instantiate repositories.
-		fRepo := mysql.NewFoodRepo(dbConn, *fModel)
+		fRepo := mysql.NewFoodRepository(dbConn, *fModel)
 
 		// instantiate services.
-		r := rServ.NewRecipeServ(fRepo)
+		r := service.NewRecipeService(fRepo)
 
 		// read JSON file's path from cli.
 		j, err := cmd.Flags().GetString("json")

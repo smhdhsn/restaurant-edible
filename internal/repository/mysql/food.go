@@ -5,7 +5,7 @@ import (
 
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 
-	fRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/food"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
 )
 
 // FoodRepo contains repository's database connection.
@@ -15,7 +15,7 @@ type FoodRepo struct {
 }
 
 // NewFoodRepo creates an instance of the repository with database connection.
-func NewFoodRepo(db *gorm.DB, m model.Food) fRepoContract.FoodRepository {
+func NewFoodRepository(db *gorm.DB, m model.Food) repositoryContract.FoodRepository {
 	return &FoodRepo{
 		model: m,
 		db:    db,

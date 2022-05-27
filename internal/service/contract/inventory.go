@@ -1,15 +1,15 @@
-package inventory
+package contract
 
 import (
 	"time"
 
-	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
 )
 
 // InventoryService is the interface that inventory service must implement.
 type InventoryService interface {
 	BuyComponents(*BuyComponentsReq) error
-	Recycle(iRepoContract.RecycleReq) error
+	Recycle(repositoryContract.RecycleReq) error
 }
 
 // BuyComponentsReq holds the details of buyed stocks.

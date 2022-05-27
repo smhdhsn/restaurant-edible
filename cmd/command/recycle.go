@@ -7,10 +7,10 @@ import (
 	"github.com/smhdhsn/restaurant-menu/internal/db"
 	"github.com/smhdhsn/restaurant-menu/internal/model"
 	"github.com/smhdhsn/restaurant-menu/internal/repository/mysql"
+	"github.com/smhdhsn/restaurant-menu/internal/service"
 
 	log "github.com/smhdhsn/restaurant-menu/internal/logger"
-	iRepoContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract/inventory"
-	iServ "github.com/smhdhsn/restaurant-menu/internal/service/inventory"
+	repositoryContract "github.com/smhdhsn/restaurant-menu/internal/repository/contract"
 )
 
 // This section holds the items to be cleaned up from inventory.
@@ -42,13 +42,13 @@ var recycleCMD = &cobra.Command{
 		iModel := new(model.Inventory)
 
 		// instantiate repositories.
-		iRepo := mysql.NewInventoryRepo(dbConn, *iModel)
+		iRepo := mysql.NewInventoryRepository(dbConn, *iModel)
 
 		// instantiate services.
-		i := iServ.NewInventoryServ(iRepo, nil)
+		i := service.NewInventoryService(iRepo, nil)
 
 		// create service request.
-		req := iRepoContract.RecycleReq{
+		req := repositoryContract.RecycleReq{
 			Finished: recycleFinished,
 			Expired:  recycleExpired,
 		}
