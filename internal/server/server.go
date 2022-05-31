@@ -35,9 +35,9 @@ func New(c *config.ServerConf, er *resource.EdibleResource) (*Server, error) {
 	s := grpc.NewServer()
 
 	// Register gRPC service handlers.
-	eipb.RegisterInventoryServiceServer(s, er.InventoryHandler)
-	erpb.RegisterRecipeServiceServer(s, er.RecipeHandler)
-	empb.RegisterMenuServiceServer(s, er.MenuHandler)
+	eipb.RegisterEdibleInventoryServiceServer(s, er.InventoryHandler)
+	erpb.RegisterEdibleRecipeServiceServer(s, er.RecipeHandler)
+	empb.RegisterEdibleMenuServiceServer(s, er.MenuHandler)
 
 	return &Server{
 		listener: l,

@@ -28,7 +28,7 @@ func NewInventoryRepository(db *gorm.DB, m model.Inventory) repositoryContract.I
 }
 
 // Buy is responsible for buying food components for the inventory, if components' stock are finished or expired.
-func (r *InventoryRepo) Buy(iListDTO []*model.InventoryDTO) error {
+func (r *InventoryRepo) Buy(iListDTO model.InventoryListDTO) error {
 	return r.db.Model(r.model).CreateInBatches(iListDTO, 100).Error
 }
 

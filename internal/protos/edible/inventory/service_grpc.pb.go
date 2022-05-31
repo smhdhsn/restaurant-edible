@@ -18,158 +18,158 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// InventoryServiceClient is the client API for InventoryService service.
+// EdibleInventoryServiceClient is the client API for EdibleInventoryService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type InventoryServiceClient interface {
+type EdibleInventoryServiceClient interface {
 	// Unary
 	Recycle(ctx context.Context, in *InventoryRecycleRequest, opts ...grpc.CallOption) (*InventoryRecycleResponse, error)
 	Use(ctx context.Context, in *InventoryUseRequest, opts ...grpc.CallOption) (*InventoryUseResponse, error)
 	Buy(ctx context.Context, in *InventoryBuyRequest, opts ...grpc.CallOption) (*InventoryBuyResponse, error)
 }
 
-type inventoryServiceClient struct {
+type edibleInventoryServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewInventoryServiceClient(cc grpc.ClientConnInterface) InventoryServiceClient {
-	return &inventoryServiceClient{cc}
+func NewEdibleInventoryServiceClient(cc grpc.ClientConnInterface) EdibleInventoryServiceClient {
+	return &edibleInventoryServiceClient{cc}
 }
 
-func (c *inventoryServiceClient) Recycle(ctx context.Context, in *InventoryRecycleRequest, opts ...grpc.CallOption) (*InventoryRecycleResponse, error) {
+func (c *edibleInventoryServiceClient) Recycle(ctx context.Context, in *InventoryRecycleRequest, opts ...grpc.CallOption) (*InventoryRecycleResponse, error) {
 	out := new(InventoryRecycleResponse)
-	err := c.cc.Invoke(ctx, "/edible.inventory.service.InventoryService/Recycle", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/edible.inventory.service.EdibleInventoryService/Recycle", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *inventoryServiceClient) Use(ctx context.Context, in *InventoryUseRequest, opts ...grpc.CallOption) (*InventoryUseResponse, error) {
+func (c *edibleInventoryServiceClient) Use(ctx context.Context, in *InventoryUseRequest, opts ...grpc.CallOption) (*InventoryUseResponse, error) {
 	out := new(InventoryUseResponse)
-	err := c.cc.Invoke(ctx, "/edible.inventory.service.InventoryService/Use", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/edible.inventory.service.EdibleInventoryService/Use", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *inventoryServiceClient) Buy(ctx context.Context, in *InventoryBuyRequest, opts ...grpc.CallOption) (*InventoryBuyResponse, error) {
+func (c *edibleInventoryServiceClient) Buy(ctx context.Context, in *InventoryBuyRequest, opts ...grpc.CallOption) (*InventoryBuyResponse, error) {
 	out := new(InventoryBuyResponse)
-	err := c.cc.Invoke(ctx, "/edible.inventory.service.InventoryService/Buy", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/edible.inventory.service.EdibleInventoryService/Buy", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// InventoryServiceServer is the server API for InventoryService service.
-// All implementations should embed UnimplementedInventoryServiceServer
+// EdibleInventoryServiceServer is the server API for EdibleInventoryService service.
+// All implementations should embed UnimplementedEdibleInventoryServiceServer
 // for forward compatibility
-type InventoryServiceServer interface {
+type EdibleInventoryServiceServer interface {
 	// Unary
 	Recycle(context.Context, *InventoryRecycleRequest) (*InventoryRecycleResponse, error)
 	Use(context.Context, *InventoryUseRequest) (*InventoryUseResponse, error)
 	Buy(context.Context, *InventoryBuyRequest) (*InventoryBuyResponse, error)
 }
 
-// UnimplementedInventoryServiceServer should be embedded to have forward compatible implementations.
-type UnimplementedInventoryServiceServer struct {
+// UnimplementedEdibleInventoryServiceServer should be embedded to have forward compatible implementations.
+type UnimplementedEdibleInventoryServiceServer struct {
 }
 
-func (UnimplementedInventoryServiceServer) Recycle(context.Context, *InventoryRecycleRequest) (*InventoryRecycleResponse, error) {
+func (UnimplementedEdibleInventoryServiceServer) Recycle(context.Context, *InventoryRecycleRequest) (*InventoryRecycleResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Recycle not implemented")
 }
-func (UnimplementedInventoryServiceServer) Use(context.Context, *InventoryUseRequest) (*InventoryUseResponse, error) {
+func (UnimplementedEdibleInventoryServiceServer) Use(context.Context, *InventoryUseRequest) (*InventoryUseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Use not implemented")
 }
-func (UnimplementedInventoryServiceServer) Buy(context.Context, *InventoryBuyRequest) (*InventoryBuyResponse, error) {
+func (UnimplementedEdibleInventoryServiceServer) Buy(context.Context, *InventoryBuyRequest) (*InventoryBuyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Buy not implemented")
 }
 
-// UnsafeInventoryServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to InventoryServiceServer will
+// UnsafeEdibleInventoryServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to EdibleInventoryServiceServer will
 // result in compilation errors.
-type UnsafeInventoryServiceServer interface {
-	mustEmbedUnimplementedInventoryServiceServer()
+type UnsafeEdibleInventoryServiceServer interface {
+	mustEmbedUnimplementedEdibleInventoryServiceServer()
 }
 
-func RegisterInventoryServiceServer(s grpc.ServiceRegistrar, srv InventoryServiceServer) {
-	s.RegisterService(&InventoryService_ServiceDesc, srv)
+func RegisterEdibleInventoryServiceServer(s grpc.ServiceRegistrar, srv EdibleInventoryServiceServer) {
+	s.RegisterService(&EdibleInventoryService_ServiceDesc, srv)
 }
 
-func _InventoryService_Recycle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdibleInventoryService_Recycle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InventoryRecycleRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventoryServiceServer).Recycle(ctx, in)
+		return srv.(EdibleInventoryServiceServer).Recycle(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/edible.inventory.service.InventoryService/Recycle",
+		FullMethod: "/edible.inventory.service.EdibleInventoryService/Recycle",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).Recycle(ctx, req.(*InventoryRecycleRequest))
+		return srv.(EdibleInventoryServiceServer).Recycle(ctx, req.(*InventoryRecycleRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _InventoryService_Use_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdibleInventoryService_Use_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InventoryUseRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventoryServiceServer).Use(ctx, in)
+		return srv.(EdibleInventoryServiceServer).Use(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/edible.inventory.service.InventoryService/Use",
+		FullMethod: "/edible.inventory.service.EdibleInventoryService/Use",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).Use(ctx, req.(*InventoryUseRequest))
+		return srv.(EdibleInventoryServiceServer).Use(ctx, req.(*InventoryUseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _InventoryService_Buy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdibleInventoryService_Buy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InventoryBuyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventoryServiceServer).Buy(ctx, in)
+		return srv.(EdibleInventoryServiceServer).Buy(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/edible.inventory.service.InventoryService/Buy",
+		FullMethod: "/edible.inventory.service.EdibleInventoryService/Buy",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).Buy(ctx, req.(*InventoryBuyRequest))
+		return srv.(EdibleInventoryServiceServer).Buy(ctx, req.(*InventoryBuyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// InventoryService_ServiceDesc is the grpc.ServiceDesc for InventoryService service.
+// EdibleInventoryService_ServiceDesc is the grpc.ServiceDesc for EdibleInventoryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var InventoryService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "edible.inventory.service.InventoryService",
-	HandlerType: (*InventoryServiceServer)(nil),
+var EdibleInventoryService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "edible.inventory.service.EdibleInventoryService",
+	HandlerType: (*EdibleInventoryServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Recycle",
-			Handler:    _InventoryService_Recycle_Handler,
+			Handler:    _EdibleInventoryService_Recycle_Handler,
 		},
 		{
 			MethodName: "Use",
-			Handler:    _InventoryService_Use_Handler,
+			Handler:    _EdibleInventoryService_Use_Handler,
 		},
 		{
 			MethodName: "Buy",
-			Handler:    _InventoryService_Buy_Handler,
+			Handler:    _EdibleInventoryService_Buy_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

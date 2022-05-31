@@ -18,5 +18,5 @@ message InventoryUseRequest {
 // The request schema for calling Buy on inventory.
 message InventoryBuyRequest {
     uint32 amount     = 1;
-    uint32 expires_at = 2;
+    int64  expires_at = 2;
 }

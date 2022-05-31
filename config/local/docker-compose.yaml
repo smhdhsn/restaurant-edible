@@ -23,7 +23,7 @@ services:
       dockerfile: config/Dockerfile
     container_name: restaurant_edible_app
     environment:
-      APP_ENV: $APP_ENV
+      APP_MODE: $APP_MODE
     ports:
       - 9002:80
     expose:

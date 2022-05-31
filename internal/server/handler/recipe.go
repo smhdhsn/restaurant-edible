@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"github.com/smhdhsn/restaurant-edible/internal/model"
+
 	erpb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // RecipeHandler contains services that can be used within recipe handler.
@@ -18,7 +20,7 @@ type RecipeHandler struct {
 }
 
 // NewRecipeHandler creates a new menu handler.
-func NewRecipeHandler(rs serviceContract.RecipeService) erpb.RecipeServiceServer {
+func NewRecipeHandler(rs serviceContract.RecipeService) erpb.EdibleRecipeServiceServer {
 	return &RecipeHandler{
 		recipeServ: rs,
 	}
@@ -26,9 +28,9 @@ func NewRecipeHandler(rs serviceContract.RecipeService) erpb.RecipeServiceServer
 
 // Store is responsible for storing item's recipe inside database.
 func (s *RecipeHandler) Store(ctx context.Context, req *erpb.RecipeStoreRequest) (*erpb.RecipeStoreResponse, error) {
-	fList := make([]*model.FoodDTO, len(req.Recipes))
+	fList := make(model.FoodListDTO, len(req.Recipes))
 	for i, f := range req.GetRecipes() {
-		cList := make([]*model.ComponentDTO, len(f.GetComponentTitles()))
+		cList := make(model.ComponentListDTO, len(f.GetComponentTitles()))
 		for i, cTitle := range f.GetComponentTitles() {
 			cList[i] = &model.ComponentDTO{Title: cTitle}
 		}

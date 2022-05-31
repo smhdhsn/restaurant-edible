@@ -7,8 +7,8 @@ import "protos/edible/inventory/request.proto";
 
 option go_package = "./;eipb";
 
-// InventoryService handles operations on inventory.
-service InventoryService {
+// EdibleInventoryService handles operations on inventory.
+service EdibleInventoryService {
     // Unary
     rpc Recycle(edible.inventory.request.InventoryRecycleRequest) returns (edible.inventory.response.InventoryRecycleResponse) {};
     rpc Use(edible.inventory.request.InventoryUseRequest) returns (edible.inventory.response.InventoryUseResponse) {};

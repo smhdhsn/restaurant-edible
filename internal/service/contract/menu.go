@@ -6,5 +6,5 @@ import (
 
 // MenuService is the interface that menu service must implement.
 type MenuService interface {
-	List() ([]*model.FoodDTO, error)
+	List() (model.FoodListDTO, error)
 }

@@ -7,8 +7,8 @@ import "protos/edible/recipe/request.proto";
 
 option go_package = "./;erpb";
 
-// RecipeService handles operations on recipe.
-service RecipeService {
+// EdibleRecipeService handles operations on recipe.
+service EdibleRecipeService {
     // Unary
     rpc Store(edible.recipe.request.RecipeStoreRequest) returns (edible.recipe.response.RecipeStoreResponse) {};
 }

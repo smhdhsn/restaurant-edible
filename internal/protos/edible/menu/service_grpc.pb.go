@@ -18,86 +18,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// MenuServiceClient is the client API for MenuService service.
+// EdibleMenuServiceClient is the client API for EdibleMenuService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MenuServiceClient interface {
+type EdibleMenuServiceClient interface {
 	// Unary
 	List(ctx context.Context, in *MenuListRequest, opts ...grpc.CallOption) (*MenuListResponse, error)
 }
 
-type menuServiceClient struct {
+type edibleMenuServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMenuServiceClient(cc grpc.ClientConnInterface) MenuServiceClient {
-	return &menuServiceClient{cc}
+func NewEdibleMenuServiceClient(cc grpc.ClientConnInterface) EdibleMenuServiceClient {
+	return &edibleMenuServiceClient{cc}
 }
 
-func (c *menuServiceClient) List(ctx context.Context, in *MenuListRequest, opts ...grpc.CallOption) (*MenuListResponse, error) {
+func (c *edibleMenuServiceClient) List(ctx context.Context, in *MenuListRequest, opts ...grpc.CallOption) (*MenuListResponse, error) {
 	out := new(MenuListResponse)
-	err := c.cc.Invoke(ctx, "/edible.menu.service.MenuService/List", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/edible.menu.service.EdibleMenuService/List", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MenuServiceServer is the server API for MenuService service.
-// All implementations should embed UnimplementedMenuServiceServer
+// EdibleMenuServiceServer is the server API for EdibleMenuService service.
+// All implementations should embed UnimplementedEdibleMenuServiceServer
 // for forward compatibility
-type MenuServiceServer interface {
+type EdibleMenuServiceServer interface {
 	// Unary
 	List(context.Context, *MenuListRequest) (*MenuListResponse, error)
 }
 
-// UnimplementedMenuServiceServer should be embedded to have forward compatible implementations.
-type UnimplementedMenuServiceServer struct {
+// UnimplementedEdibleMenuServiceServer should be embedded to have forward compatible implementations.
+type UnimplementedEdibleMenuServiceServer struct {
 }
 
-func (UnimplementedMenuServiceServer) List(context.Context, *MenuListRequest) (*MenuListResponse, error) {
+func (UnimplementedEdibleMenuServiceServer) List(context.Context, *MenuListRequest) (*MenuListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 
-// UnsafeMenuServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MenuServiceServer will
+// UnsafeEdibleMenuServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to EdibleMenuServiceServer will
 // result in compilation errors.
-type UnsafeMenuServiceServer interface {
-	mustEmbedUnimplementedMenuServiceServer()
+type UnsafeEdibleMenuServiceServer interface {
+	mustEmbedUnimplementedEdibleMenuServiceServer()
 }
 
-func RegisterMenuServiceServer(s grpc.ServiceRegistrar, srv MenuServiceServer) {
-	s.RegisterService(&MenuService_ServiceDesc, srv)
+func RegisterEdibleMenuServiceServer(s grpc.ServiceRegistrar, srv EdibleMenuServiceServer) {
+	s.RegisterService(&EdibleMenuService_ServiceDesc, srv)
 }
 
-func _MenuService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdibleMenuService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MenuListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MenuServiceServer).List(ctx, in)
+		return srv.(EdibleMenuServiceServer).List(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/edible.menu.service.MenuService/List",
+		FullMethod: "/edible.menu.service.EdibleMenuService/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MenuServiceServer).List(ctx, req.(*MenuListRequest))
+		return srv.(EdibleMenuServiceServer).List(ctx, req.(*MenuListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// MenuService_ServiceDesc is the grpc.ServiceDesc for MenuService service.
+// EdibleMenuService_ServiceDesc is the grpc.ServiceDesc for EdibleMenuService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var MenuService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "edible.menu.service.MenuService",
-	HandlerType: (*MenuServiceServer)(nil),
+var EdibleMenuService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "edible.menu.service.EdibleMenuService",
+	HandlerType: (*EdibleMenuServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "List",
-			Handler:    _MenuService_List_Handler,
+			Handler:    _EdibleMenuService_List_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -20,11 +20,11 @@ func NewRecipeService(fr repositoryContract.FoodRepository) serviceContract.Reci
 }
 
 // CreateRecipe stores couple of sample recipes inside database.
-func (s *RecipeServ) Store(fListDTO []*model.FoodDTO) (err error) {
-	err = s.fRepo.BatchInsert(fListDTO)
+func (s *RecipeServ) Store(fListDTO model.FoodListDTO) error {
+	err := s.fRepo.BatchInsert(fListDTO)
 	if err != nil {
 		return errors.Wrap(err, "failed to batch insert foods")
 	}
 
-	return
+	return nil
 }

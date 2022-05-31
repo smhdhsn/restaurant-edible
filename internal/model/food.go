@@ -17,7 +17,10 @@ type Food struct {
 type FoodDTO struct {
 	ID         uint32
 	Title      string
-	Components []*ComponentDTO
+	Components ComponentListDTO
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+// FoodListDTO represents a list of FoodDTO.
+type FoodListDTO []*FoodDTO

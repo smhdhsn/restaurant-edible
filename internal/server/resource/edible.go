@@ -8,16 +8,16 @@ import (
 
 // EdibleResource holds menu resource's handlers.
 type EdibleResource struct {
-	MenuHandler      empb.MenuServiceServer
-	RecipeHandler    erpb.RecipeServiceServer
-	InventoryHandler eipb.InventoryServiceServer
+	InventoryHandler eipb.EdibleInventoryServiceServer
+	RecipeHandler    erpb.EdibleRecipeServiceServer
+	MenuHandler      empb.EdibleMenuServiceServer
 }
 
 // NewEdibleResource creates a new menu resource with all handlers within itself.
-func NewEdibleResource(mh empb.MenuServiceServer, rh erpb.RecipeServiceServer, ih eipb.InventoryServiceServer) *EdibleResource {
+func NewEdibleResource(ih eipb.EdibleInventoryServiceServer, rh erpb.EdibleRecipeServiceServer, mh empb.EdibleMenuServiceServer) *EdibleResource {
 	return &EdibleResource{
-		MenuHandler:      mh,
-		RecipeHandler:    rh,
 		InventoryHandler: ih,
+		RecipeHandler:    rh,
+		MenuHandler:      mh,
 	}
 }

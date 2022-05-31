@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	empb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // MenuHandler contains services that can be used within menu handler.
@@ -17,7 +18,7 @@ type MenuHandler struct {
 }
 
 // NewMenuHandler creates a new menu handler.
-func NewMenuHandler(ms serviceContract.MenuService) empb.MenuServiceServer {
+func NewMenuHandler(ms serviceContract.MenuService) empb.EdibleMenuServiceServer {
 	return &MenuHandler{
 		menuServ: ms,
 	}
@@ -27,7 +28,7 @@ func NewMenuHandler(ms serviceContract.MenuService) empb.MenuServiceServer {
 func (s *MenuHandler) List(ctx context.Context, req *empb.MenuListRequest) (*empb.MenuListResponse, error) {
 	fListDTO, err := s.menuServ.List()
 	if err != nil {
-		if errors.Is(err, repositoryContract.ErrRecordNotFound) {
+		if errors.Is(err, repositoryContract.ErrEmptyResult) {
 			return nil, status.Error(codes.NotFound, err.Error())
 		}
 
@@ -36,9 +37,17 @@ func (s *MenuHandler) List(ctx context.Context, req *empb.MenuListRequest) (*emp
 
 	fList := make([]*empb.Food, len(fListDTO))
 	for i, f := range fListDTO {
+		cList := make([]*empb.Ingredient, len(f.Components))
+		for j, c := range f.Components {
+			cList[j] = &empb.Ingredient{
+				Title: c.Title,
+			}
+		}
+
 		fList[i] = &empb.Food{
-			Id:    f.ID,
-			Title: f.Title,
+			Id:          f.ID,
+			Title:       f.Title,
+			Ingredients: cList,
 		}
 	}
 
