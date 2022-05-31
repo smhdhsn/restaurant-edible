@@ -5,7 +5,7 @@ package edible.menu.service;
 import "protos/edible/menu/response.proto";
 import "protos/edible/menu/request.proto";
 
-option go_package = "empb";
+option go_package = "./;empb";
 
 // MenuService handles operations on menu.
 service MenuService {

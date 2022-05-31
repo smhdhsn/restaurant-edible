@@ -4,7 +4,7 @@ package edible.recipe.request;
 
 import "protos/edible/recipe/model.proto";
 
-option go_package = "erpb";
+option go_package = "./;erpb";
 
 // The request schema for calling Store on recipe.
 message RecipeStoreRequest {

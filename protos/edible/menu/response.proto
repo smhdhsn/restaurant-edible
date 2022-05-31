@@ -4,7 +4,7 @@ package edible.menu.response;
 
 import "protos/edible/menu/model.proto";
 
-option go_package = "empb";
+option go_package = "./;empb";
 
 // The response you get for calling List on menu.
 message MenuListResponse {

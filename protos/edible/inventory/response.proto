@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package edible.inventory.response;
 
+option go_package = "./;eipb";
+
 // The response you get for calling Recycle on inventory.
 message InventoryRecycleResponse {
     bool status = 1;

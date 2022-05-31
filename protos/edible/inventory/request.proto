@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package edible.inventory.request;
 
+option go_package = "./;eipb";
+
 // The request schema for calling Recycle on inventory.
 message InventoryRecycleRequest {
     bool recycle_finished = 1;

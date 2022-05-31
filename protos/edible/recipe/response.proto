@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package edible.recipe.response;
 
-option go_package = "erpb";
+option go_package = "./;erpb";
 
 // The response you get for calling Store on recipe.
 message RecipeStoreResponse {}

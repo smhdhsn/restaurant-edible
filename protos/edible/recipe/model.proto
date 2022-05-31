@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package edible.recipe.model;
 
-option go_package = "erpb";
+option go_package = "./;erpb";
 
 // The schema of the Recipe message.
 message Recipe {

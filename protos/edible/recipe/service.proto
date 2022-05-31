@@ -5,7 +5,7 @@ package edible.recipe.service;
 import "protos/edible/recipe/response.proto";
 import "protos/edible/recipe/request.proto";
 
-option go_package = "erpb";
+option go_package = "./;erpb";
 
 // RecipeService handles operations on recipe.
 service RecipeService {

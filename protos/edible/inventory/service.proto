@@ -5,7 +5,7 @@ package edible.inventory.service;
 import "protos/edible/inventory/response.proto";
 import "protos/edible/inventory/request.proto";
 
-option go_package = "eipb";
+option go_package = "./;eipb";
 
 // InventoryService handles operations on inventory.
 service InventoryService {
