@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/smhdhsn/restaurant-edible/internal/config"
 	"github.com/smhdhsn/restaurant-edible/internal/db"
-	"github.com/smhdhsn/restaurant-edible/internal/model"
 	"github.com/smhdhsn/restaurant-edible/internal/repository/mysql"
 	"github.com/smhdhsn/restaurant-edible/internal/server"
 	"github.com/smhdhsn/restaurant-edible/internal/server/handler"
@@ -28,19 +27,14 @@ func main() {
 	}
 
 	// initialize auto migration.
-	if err := db.InitMigrations(dbConn); err != nil {
+	if err := mysql.InitMigrations(dbConn); err != nil {
 		log.Fatal(err)
 	}
 
-	// instantiate models.
-	cModel := new(model.Component)
-	iModel := new(model.Inventory)
-	fModel := new(model.Food)
-
 	// instantiate repositories.
-	cRepo := mysql.NewComponentRepository(dbConn, *cModel)
-	iRepo := mysql.NewInventoryRepository(dbConn, *iModel)
-	fRepo := mysql.NewFoodRepository(dbConn, *fModel)
+	cRepo := mysql.NewComponentRepository(dbConn)
+	iRepo := mysql.NewInventoryRepository(dbConn)
+	fRepo := mysql.NewFoodRepository(dbConn)
 
 	// instantiate services.
 	iServ := service.NewInventoryService(iRepo, cRepo, fRepo)

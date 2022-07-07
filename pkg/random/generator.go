@@ -31,7 +31,7 @@ func GenerateString(length int) string {
 	return string(b)
 }
 
-// GenerateUint generates a random uint between two given values.
+// GenerateUint32 generates a random uint between two given values.
 func GenerateUint32(from, to int) uint32 {
 	s := rand.Intn(from-to) + from
 	return uint32(s)

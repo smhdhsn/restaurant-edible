@@ -10,25 +10,33 @@ import (
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 )
 
-// the amount of items being used with every order submittion.
-const decrBy = 1
+// inventory represents the inventories table on database.
+type inventory struct {
+	ID          uint32    `gorm:"primaryKey"`
+	ComponentID uint32    `gorm:"index;not null"`
+	Component   component `gorm:"constraint:OnDelete:CASCADE"`
+	Stock       uint32    `gorm:"not null"`
+	ExpiresAt   time.Time `gorm:"not null"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+}
 
 // InventoryRepo contains repository's database connection.
 type InventoryRepo struct {
-	model model.Inventory
+	model inventory
 	db    *gorm.DB
 }
 
 // NewInventoryRepo creates an instance of the repository with database connection.
-func NewInventoryRepository(db *gorm.DB, m model.Inventory) repositoryContract.InventoryRepository {
+func NewInventoryRepository(db *gorm.DB) repositoryContract.InventoryRepository {
 	return &InventoryRepo{
-		model: m,
+		model: inventory{},
 		db:    db,
 	}
 }
 
 // Buy is responsible for buying food components for the inventory, if components' stock are finished or expired.
-func (r *InventoryRepo) Buy(iListDTO model.InventoryListDTO) error {
+func (r *InventoryRepo) Buy(iListDTO []*model.InventoryDTO) error {
 	return r.db.Model(r.model).CreateInBatches(iListDTO, 100).Error
 }
 
@@ -41,6 +49,9 @@ func (r *InventoryRepo) Recycle(finished, expired bool) error {
 		Delete(r.model).
 		Error
 }
+
+// the amount of items being used with every order submittion.
+const decrBy = 1
 
 // Use decreases food components' stock from inventory.
 func (r *InventoryRepo) Use(fDTO *model.FoodDTO) error {

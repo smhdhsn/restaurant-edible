@@ -28,9 +28,9 @@ func NewRecipeHandler(rs serviceContract.RecipeService) erpb.EdibleRecipeService
 
 // Store is responsible for storing item's recipe inside database.
 func (s *RecipeHandler) Store(ctx context.Context, req *erpb.RecipeStoreRequest) (*erpb.RecipeStoreResponse, error) {
-	fList := make(model.FoodListDTO, len(req.Recipes))
+	fList := make([]*model.FoodDTO, len(req.Recipes))
 	for i, f := range req.GetRecipes() {
-		cList := make(model.ComponentListDTO, len(f.GetComponentTitles()))
+		cList := make([]*model.ComponentDTO, len(f.GetComponentTitles()))
 		for i, cTitle := range f.GetComponentTitles() {
 			cList[i] = &model.ComponentDTO{Title: cTitle}
 		}

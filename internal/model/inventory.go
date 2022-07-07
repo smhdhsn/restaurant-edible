@@ -4,17 +4,6 @@ import (
 	"time"
 )
 
-// Inventory represents the inventories table on database.
-type Inventory struct {
-	ID          uint32    `gorm:"primaryKey"`
-	ComponentID uint32    `gorm:"index;not null"`
-	Component   Component `gorm:"constraint:OnDelete:CASCADE"`
-	Stock       uint32    `gorm:"not null"`
-	ExpiresAt   time.Time `gorm:"not null"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-}
-
 // InventoryDTO represents inventory's data transfer object.
 type InventoryDTO struct {
 	ID          uint32
@@ -25,6 +14,3 @@ type InventoryDTO struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
-
-// InventoryListDTO represents a list of InventoryDTO.
-type InventoryListDTO []*InventoryDTO
