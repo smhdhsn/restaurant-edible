@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Food represents the food model's entity.
+// Food represents the food repository's entity.
 type Food struct {
 	ID         uint32
 	Title      string

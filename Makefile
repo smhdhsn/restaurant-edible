@@ -2,7 +2,7 @@ APP_MODE ?= local
 
 # runs the script which loads the containers of the application.
 up:
-	@./script/docker_up.sh $(APP_MODE)
+	@./scripts/docker_up.sh $(APP_MODE)
 
 # deletes application's containers.
 purge:

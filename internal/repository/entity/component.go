@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Component represents the component model's entity.
+// Component represents the component repository's entity.
 type Component struct {
 	ID        uint32
 	Title     string

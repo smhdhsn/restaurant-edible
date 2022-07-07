@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Inventory represents the inventory model's entity.
+// Inventory represents the inventory repository's entity.
 type Inventory struct {
 	ID          uint32
 	ComponentID uint32

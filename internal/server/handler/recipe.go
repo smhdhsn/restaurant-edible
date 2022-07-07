@@ -2,15 +2,15 @@ package handler
 
 import (
 	"context"
-	"errors"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	recipeProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
-	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
-	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
+
+	log "github.com/smhdhsn/restaurant-edible/internal/logger"
+	recipeProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
+	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
 
 // RecipeHandler contains services that can be used within recipe handler.
@@ -27,29 +27,35 @@ func NewRecipeHandler(rs serviceContract.RecipeService) recipeProto.EdibleRecipe
 
 // Store is responsible for storing item's recipe inside database.
 func (s *RecipeHandler) Store(ctx context.Context, req *recipeProto.RecipeStoreRequest) (*recipeProto.RecipeStoreResponse, error) {
-	fList := make([]*dto.FoodDTO, len(req.Recipes))
-	for i, f := range req.GetRecipes() {
-		cList := make([]*dto.ComponentDTO, len(f.GetComponentTitles()))
-		for i, cTitle := range f.GetComponentTitles() {
-			cList[i] = &dto.ComponentDTO{Title: cTitle}
-		}
+	fListDTO := singleRecipeReqToMultipleFoodDTO(req)
 
-		fList[i] = &dto.FoodDTO{
-			Title:      f.GetFoodTitle(),
-			Components: cList,
-		}
-	}
-
-	err := s.recipeServ.Store(fList)
+	err := s.recipeServ.Store(fListDTO)
 	if err != nil {
-		if errors.Is(err, repositoryContract.ErrDuplicateEntry) {
-			return nil, status.Error(codes.AlreadyExists, err.Error())
-		}
-
+		log.Error(err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
 	resp := new(recipeProto.RecipeStoreResponse)
 
 	return resp, nil
+}
+
+// singleRecipeReqToMultipleFoodDTO is responsible for transforming a list of recipe req to a list of food dto struct.
+func singleRecipeReqToMultipleFoodDTO(req *recipeProto.RecipeStoreRequest) []*dto.Food {
+	fListDTO := make([]*dto.Food, len(req.Recipes))
+
+	for i, fReq := range req.GetRecipes() {
+		cListDTO := make([]*dto.Component, len(fReq.GetComponentTitles()))
+
+		for i, cTitle := range fReq.GetComponentTitles() {
+			cListDTO[i] = &dto.Component{Title: cTitle}
+		}
+
+		fListDTO[i] = &dto.Food{
+			Title:      fReq.GetFoodTitle(),
+			Components: cListDTO,
+		}
+	}
+
+	return fListDTO
 }

@@ -14,7 +14,11 @@ type EdibleResource struct {
 }
 
 // NewEdibleResource creates a new menu resource with all handlers within itself.
-func NewEdibleResource(ih inventoryProto.EdibleInventoryServiceServer, rh recipeProto.EdibleRecipeServiceServer, mh menuProto.EdibleMenuServiceServer) *EdibleResource {
+func NewEdibleResource(
+	ih inventoryProto.EdibleInventoryServiceServer,
+	rh recipeProto.EdibleRecipeServiceServer,
+	mh menuProto.EdibleMenuServiceServer,
+) *EdibleResource {
 	return &EdibleResource{
 		InventoryHandler: ih,
 		RecipeHandler:    rh,

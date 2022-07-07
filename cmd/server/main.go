@@ -42,12 +42,12 @@ func main() {
 	mServ := service.NewMenuService(fRepo)
 
 	// instantiate handlers.
-	iHandler := handler.NewInventoryHandler(iServ)
-	rHandler := handler.NewRecipeHandler(rServ)
-	mHandler := handler.NewMenuHandler(mServ)
+	iHand := handler.NewInventoryHandler(iServ)
+	rHand := handler.NewRecipeHandler(rServ)
+	mHand := handler.NewMenuHandler(mServ)
 
 	// instantiate resources.
-	eRes := resource.NewEdibleResource(iHandler, rHandler, mHandler)
+	eRes := resource.NewEdibleResource(iHand, rHand, mHand)
 
 	// instantiate gRPC server.
 	s, err := server.New(&conf.Server, eRes)
