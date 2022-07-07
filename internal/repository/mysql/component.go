@@ -3,17 +3,19 @@ package mysql
 import (
 	"time"
 
+	"github.com/pkg/errors"
 	"gorm.io/gorm"
 
+	"github.com/smhdhsn/restaurant-edible/internal/repository/entity"
+
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
-	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // component represents the component table's model.
 type component struct {
 	ID        uint32  `gorm:"primaryKey"`
 	Title     string  `gorm:"unique;not null"`
-	Foods     []*food `gorm:"many2many:food_components"`
+	Foods     []*food `gorm:"many2many:foods_components"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -33,26 +35,38 @@ func NewComponentRepository(db *gorm.DB) repositoryContract.ComponentRepository 
 }
 
 // GetUnavailable is responsible for getting food components that are not avaiable.
-func (r *ComponentRepo) GetUnavailable() ([]*dto.ComponentDTO, error) {
-	result := make([]*component, 0)
+func (r *ComponentRepo) GetUnavailable() ([]*entity.Component, error) {
+	cListModel := make([]*component, 0)
 
-	tx := r.db.
+	err := r.db.
 		Table("components AS c").
 		Where(
 			"c.id NOT IN (?)",
 			availableInventoryItems(r.db),
 		).
-		Find(&result)
+		Find(&cListModel).
+		Error
+	if err != nil {
+		return nil, errors.Wrap(err, "error on fetching unavailable foods from database")
+	}
 
-	cListDTO := make([]*dto.ComponentDTO, len(result))
-	for i, c := range result {
-		cListDTO[i] = &dto.ComponentDTO{
-			ID:        c.ID,
-			Title:     c.Title,
-			CreatedAt: c.CreatedAt,
-			UpdatedAt: c.UpdatedAt,
+	cListEntity := multipleComponentModelToEntity(cListModel)
+
+	return cListEntity, nil
+}
+
+// multipleComponentModelToEntity is responsible for transforming a list of component model to a list of component entity struct.
+func multipleComponentModelToEntity(cListModel []*component) []*entity.Component {
+	cListEntity := make([]*entity.Component, len(cListModel))
+
+	for i, cModel := range cListModel {
+		cListEntity[i] = &entity.Component{
+			ID:        cModel.ID,
+			Title:     cModel.Title,
+			CreatedAt: cModel.CreatedAt,
+			UpdatedAt: cModel.UpdatedAt,
 		}
 	}
 
-	return cListDTO, tx.Error
+	return cListEntity
 }

@@ -1,11 +1,11 @@
 package contract
 
 import (
-	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
+	"github.com/smhdhsn/restaurant-edible/internal/repository/entity"
 )
 
 // FoodRepository is the interface representing food repository or it's mock.
 type FoodRepository interface {
-	GetAvailable() ([]*dto.FoodDTO, error)
-	BatchInsert([]*dto.FoodDTO) error
+	GetAvailable() ([]*entity.Food, error)
+	BatchInsert([]*entity.Food) error
 }

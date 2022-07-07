@@ -1,10 +1,10 @@
 package contract
 
 import (
-	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
+	"github.com/smhdhsn/restaurant-edible/internal/repository/entity"
 )
 
 // ComponentRepository is the interface representing component repository or it's mock.
 type ComponentRepository interface {
-	GetUnavailable() ([]*dto.ComponentDTO, error)
+	GetUnavailable() ([]*entity.Component, error)
 }
