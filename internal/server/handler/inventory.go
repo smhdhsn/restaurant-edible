@@ -8,11 +8,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
-
-	eipb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/inventory"
+	inventoryProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/inventory"
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // InventoryHandler contains services that can be used within inventory handler.
@@ -21,14 +20,14 @@ type InventoryHandler struct {
 }
 
 // NewInventoryHandler creates a new menu handler.
-func NewInventoryHandler(is serviceContract.InventoryService) eipb.EdibleInventoryServiceServer {
+func NewInventoryHandler(is serviceContract.InventoryService) inventoryProto.EdibleInventoryServiceServer {
 	return &InventoryHandler{
 		inventoryServ: is,
 	}
 }
 
 // Recycle is responsible for recycling finished and/or expired items from inventory.
-func (s *InventoryHandler) Recycle(ctx context.Context, req *eipb.InventoryRecycleRequest) (*eipb.InventoryRecycleResponse, error) {
+func (s *InventoryHandler) Recycle(ctx context.Context, req *inventoryProto.InventoryRecycleRequest) (*inventoryProto.InventoryRecycleResponse, error) {
 	finished := req.GetRecycleFinished()
 	expired := req.GetRecycleExpired()
 
@@ -37,7 +36,7 @@ func (s *InventoryHandler) Recycle(ctx context.Context, req *eipb.InventoryRecyc
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	resp := eipb.InventoryRecycleResponse{
+	resp := inventoryProto.InventoryRecycleResponse{
 		Status: true,
 	}
 
@@ -45,8 +44,8 @@ func (s *InventoryHandler) Recycle(ctx context.Context, req *eipb.InventoryRecyc
 }
 
 // Use is responsible for decreasing item's inside from inventory.
-func (s *InventoryHandler) Use(ctx context.Context, req *eipb.InventoryUseRequest) (*eipb.InventoryUseResponse, error) {
-	fReq := model.FoodDTO{
+func (s *InventoryHandler) Use(ctx context.Context, req *inventoryProto.InventoryUseRequest) (*inventoryProto.InventoryUseResponse, error) {
+	fReq := dto.FoodDTO{
 		ID: req.GetFoodId(),
 	}
 
@@ -59,7 +58,7 @@ func (s *InventoryHandler) Use(ctx context.Context, req *eipb.InventoryUseReques
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	resp := eipb.InventoryUseResponse{
+	resp := inventoryProto.InventoryUseResponse{
 		Status: true,
 	}
 
@@ -67,7 +66,7 @@ func (s *InventoryHandler) Use(ctx context.Context, req *eipb.InventoryUseReques
 }
 
 // Buy is responsible for increasing item's stock inside inventory.
-func (s *InventoryHandler) Buy(ctx context.Context, req *eipb.InventoryBuyRequest) (*eipb.InventoryBuyResponse, error) {
+func (s *InventoryHandler) Buy(ctx context.Context, req *inventoryProto.InventoryBuyRequest) (*inventoryProto.InventoryBuyResponse, error) {
 	amount := req.GetAmount()
 	expiresAt := time.Unix(req.GetExpiresAt(), 0)
 
@@ -76,7 +75,7 @@ func (s *InventoryHandler) Buy(ctx context.Context, req *eipb.InventoryBuyReques
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	resp := eipb.InventoryBuyResponse{
+	resp := inventoryProto.InventoryBuyResponse{
 		Status: true,
 	}
 

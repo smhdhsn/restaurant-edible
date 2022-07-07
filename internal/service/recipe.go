@@ -3,10 +3,9 @@ package service
 import (
 	"github.com/pkg/errors"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
-
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // RecipeServ contains repositories that will be used within this service.
@@ -20,7 +19,7 @@ func NewRecipeService(fr repositoryContract.FoodRepository) serviceContract.Reci
 }
 
 // CreateRecipe stores couple of sample recipes inside database.
-func (s *RecipeServ) Store(fListDTO []*model.FoodDTO) error {
+func (s *RecipeServ) Store(fListDTO []*dto.FoodDTO) error {
 	err := s.fRepo.BatchInsert(fListDTO)
 	if err != nil {
 		return errors.Wrap(err, "failed to batch insert foods")

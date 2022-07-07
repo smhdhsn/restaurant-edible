@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	empb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
+	menuProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
 )
@@ -18,14 +18,14 @@ type MenuHandler struct {
 }
 
 // NewMenuHandler creates a new menu handler.
-func NewMenuHandler(ms serviceContract.MenuService) empb.EdibleMenuServiceServer {
+func NewMenuHandler(ms serviceContract.MenuService) menuProto.EdibleMenuServiceServer {
 	return &MenuHandler{
 		menuServ: ms,
 	}
 }
 
 // List is responsible for getting menu.
-func (s *MenuHandler) List(ctx context.Context, req *empb.MenuListRequest) (*empb.MenuListResponse, error) {
+func (s *MenuHandler) List(ctx context.Context, req *menuProto.MenuListRequest) (*menuProto.MenuListResponse, error) {
 	fListDTO, err := s.menuServ.List()
 	if err != nil {
 		if errors.Is(err, repositoryContract.ErrEmptyResult) {
@@ -35,23 +35,23 @@ func (s *MenuHandler) List(ctx context.Context, req *empb.MenuListRequest) (*emp
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	fList := make([]*empb.Food, len(fListDTO))
+	fList := make([]*menuProto.Food, len(fListDTO))
 	for i, f := range fListDTO {
-		cList := make([]*empb.Ingredient, len(f.Components))
+		cList := make([]*menuProto.Ingredient, len(f.Components))
 		for j, c := range f.Components {
-			cList[j] = &empb.Ingredient{
+			cList[j] = &menuProto.Ingredient{
 				Title: c.Title,
 			}
 		}
 
-		fList[i] = &empb.Food{
+		fList[i] = &menuProto.Food{
 			Id:          f.ID,
 			Title:       f.Title,
 			Ingredients: cList,
 		}
 	}
 
-	resp := &empb.MenuListResponse{
+	resp := &menuProto.MenuListResponse{
 		Foods: fList,
 	}
 

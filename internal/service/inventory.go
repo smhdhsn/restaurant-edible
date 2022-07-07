@@ -5,10 +5,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
-
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // InventoryServ contains repositories that will be used within this service.
@@ -42,9 +41,9 @@ func (s *InventoryServ) Buy(stock uint32, expiresAt time.Time) error {
 		return nil
 	}
 
-	iListDTO := make([]*model.InventoryDTO, len(cList))
+	iListDTO := make([]*dto.InventoryDTO, len(cList))
 	for i, c := range cList {
-		iListDTO[i] = &model.InventoryDTO{
+		iListDTO[i] = &dto.InventoryDTO{
 			ComponentID: c.ID,
 			Stock:       stock,
 			ExpiresAt:   expiresAt,
@@ -60,7 +59,7 @@ func (s *InventoryServ) Buy(stock uint32, expiresAt time.Time) error {
 }
 
 // GetFood is responsible for fetching available meals from database.
-func (s *InventoryServ) Use(fDTO *model.FoodDTO) error {
+func (s *InventoryServ) Use(fDTO *dto.FoodDTO) error {
 	foods, err := s.fRepo.GetAvailable()
 	if err != nil {
 		return errors.Wrap(err, "failed to get available foods")

@@ -7,11 +7,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
-
-	erpb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
+	recipeProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // RecipeHandler contains services that can be used within recipe handler.
@@ -20,22 +19,22 @@ type RecipeHandler struct {
 }
 
 // NewRecipeHandler creates a new menu handler.
-func NewRecipeHandler(rs serviceContract.RecipeService) erpb.EdibleRecipeServiceServer {
+func NewRecipeHandler(rs serviceContract.RecipeService) recipeProto.EdibleRecipeServiceServer {
 	return &RecipeHandler{
 		recipeServ: rs,
 	}
 }
 
 // Store is responsible for storing item's recipe inside database.
-func (s *RecipeHandler) Store(ctx context.Context, req *erpb.RecipeStoreRequest) (*erpb.RecipeStoreResponse, error) {
-	fList := make([]*model.FoodDTO, len(req.Recipes))
+func (s *RecipeHandler) Store(ctx context.Context, req *recipeProto.RecipeStoreRequest) (*recipeProto.RecipeStoreResponse, error) {
+	fList := make([]*dto.FoodDTO, len(req.Recipes))
 	for i, f := range req.GetRecipes() {
-		cList := make([]*model.ComponentDTO, len(f.GetComponentTitles()))
+		cList := make([]*dto.ComponentDTO, len(f.GetComponentTitles()))
 		for i, cTitle := range f.GetComponentTitles() {
-			cList[i] = &model.ComponentDTO{Title: cTitle}
+			cList[i] = &dto.ComponentDTO{Title: cTitle}
 		}
 
-		fList[i] = &model.FoodDTO{
+		fList[i] = &dto.FoodDTO{
 			Title:      f.GetFoodTitle(),
 			Components: cList,
 		}
@@ -50,7 +49,7 @@ func (s *RecipeHandler) Store(ctx context.Context, req *erpb.RecipeStoreRequest)
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	resp := new(erpb.RecipeStoreResponse)
+	resp := new(recipeProto.RecipeStoreResponse)
 
 	return resp, nil
 }

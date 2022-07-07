@@ -1,10 +1,10 @@
 package contract
 
 import (
-	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // RecipeService is the interface that recipe service must implement.
 type RecipeService interface {
-	Store([]*model.FoodDTO) error
+	Store([]*dto.FoodDTO) error
 }

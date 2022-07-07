@@ -5,9 +5,8 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
-
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // component represents the component table's model.
@@ -34,7 +33,7 @@ func NewComponentRepository(db *gorm.DB) repositoryContract.ComponentRepository 
 }
 
 // GetUnavailable is responsible for getting food components that are not avaiable.
-func (r *ComponentRepo) GetUnavailable() ([]*model.ComponentDTO, error) {
+func (r *ComponentRepo) GetUnavailable() ([]*dto.ComponentDTO, error) {
 	result := make([]*component, 0)
 
 	tx := r.db.
@@ -45,9 +44,9 @@ func (r *ComponentRepo) GetUnavailable() ([]*model.ComponentDTO, error) {
 		).
 		Find(&result)
 
-	cListDTO := make([]*model.ComponentDTO, len(result))
+	cListDTO := make([]*dto.ComponentDTO, len(result))
 	for i, c := range result {
-		cListDTO[i] = &model.ComponentDTO{
+		cListDTO[i] = &dto.ComponentDTO{
 			ID:        c.ID,
 			Title:     c.Title,
 			CreatedAt: c.CreatedAt,

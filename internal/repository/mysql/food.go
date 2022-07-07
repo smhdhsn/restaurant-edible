@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 )
@@ -34,7 +34,7 @@ func NewFoodRepository(db *gorm.DB) repositoryContract.FoodRepository {
 }
 
 // GetAvailable gets foods that their components are available.
-func (r *FoodRepo) GetAvailable() ([]*model.FoodDTO, error) {
+func (r *FoodRepo) GetAvailable() ([]*dto.FoodDTO, error) {
 	result := make([]*food, 0)
 
 	tx := r.db.
@@ -50,11 +50,11 @@ func (r *FoodRepo) GetAvailable() ([]*model.FoodDTO, error) {
 		return nil, repositoryContract.ErrEmptyResult
 	}
 
-	fListDTO := make([]*model.FoodDTO, len(result))
+	fListDTO := make([]*dto.FoodDTO, len(result))
 	for i, f := range result {
-		cListDTO := make([]*model.ComponentDTO, len(f.Components))
+		cListDTO := make([]*dto.ComponentDTO, len(f.Components))
 		for j, c := range f.Components {
-			cListDTO[j] = &model.ComponentDTO{
+			cListDTO[j] = &dto.ComponentDTO{
 				ID:        c.ID,
 				Title:     c.Title,
 				CreatedAt: c.CreatedAt,
@@ -62,7 +62,7 @@ func (r *FoodRepo) GetAvailable() ([]*model.FoodDTO, error) {
 			}
 		}
 
-		fListDTO[i] = &model.FoodDTO{
+		fListDTO[i] = &dto.FoodDTO{
 			ID:         f.ID,
 			Title:      f.Title,
 			Components: cListDTO,
@@ -75,7 +75,7 @@ func (r *FoodRepo) GetAvailable() ([]*model.FoodDTO, error) {
 }
 
 // BatchInsert is responsible for storing a chunk of data inside database.
-func (r *FoodRepo) BatchInsert(fListDTO []*model.FoodDTO) error {
+func (r *FoodRepo) BatchInsert(fListDTO []*dto.FoodDTO) error {
 	fList := make([]*food, len(fListDTO))
 	for i, f := range fListDTO {
 		cList := make([]*component, len(f.Components))

@@ -11,9 +11,9 @@ import (
 	"github.com/smhdhsn/restaurant-edible/internal/server/resource"
 
 	log "github.com/smhdhsn/restaurant-edible/internal/logger"
-	eipb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/inventory"
-	empb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
-	erpb "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
+	inventoryProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/inventory"
+	menuProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
+	recipeProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/recipe"
 )
 
 // Server contains server's services.
@@ -24,20 +24,20 @@ type Server struct {
 }
 
 // New creates a new http server.
-func New(c *config.ServerConf, er *resource.EdibleResource) (*Server, error) {
-	// Listen to a specific host and port for incoming requests.
+func New(c *config.ServerConf, eRes *resource.EdibleResource) (*Server, error) {
+	// listen to a specific host and port for incoming requests.
 	l, err := net.Listen(c.Protocol, fmt.Sprintf("%s:%d", c.Host, c.Port))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to listen to port")
 	}
 
-	// Instantiate gRPC server.
+	// instantiate gRPC server.
 	s := grpc.NewServer()
 
-	// Register gRPC service handlers.
-	eipb.RegisterEdibleInventoryServiceServer(s, er.InventoryHandler)
-	erpb.RegisterEdibleRecipeServiceServer(s, er.RecipeHandler)
-	empb.RegisterEdibleMenuServiceServer(s, er.MenuHandler)
+	// register gRPC service handlers.
+	inventoryProto.RegisterEdibleInventoryServiceServer(s, eRes.InventoryHandler)
+	recipeProto.RegisterEdibleRecipeServiceServer(s, eRes.RecipeHandler)
+	menuProto.RegisterEdibleMenuServiceServer(s, eRes.MenuHandler)
 
 	return &Server{
 		listener: l,

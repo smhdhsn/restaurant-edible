@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/smhdhsn/restaurant-edible/internal/model"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 )
@@ -36,7 +36,7 @@ func NewInventoryRepository(db *gorm.DB) repositoryContract.InventoryRepository 
 }
 
 // Buy is responsible for buying food components for the inventory, if components' stock are finished or expired.
-func (r *InventoryRepo) Buy(iListDTO []*model.InventoryDTO) error {
+func (r *InventoryRepo) Buy(iListDTO []*dto.InventoryDTO) error {
 	return r.db.Model(r.model).CreateInBatches(iListDTO, 100).Error
 }
 
@@ -54,7 +54,7 @@ func (r *InventoryRepo) Recycle(finished, expired bool) error {
 const decrBy = 1
 
 // Use decreases food components' stock from inventory.
-func (r *InventoryRepo) Use(fDTO *model.FoodDTO) error {
+func (r *InventoryRepo) Use(fDTO *dto.FoodDTO) error {
 	return r.db.
 		Table("inventories AS i").
 		Where("i.expires_at > ?", time.Now()).
