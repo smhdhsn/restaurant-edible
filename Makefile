@@ -1,4 +1,4 @@
-.PHONY: up purge shell build_server build_all proto_inventory proto_recipe proto_menu proto_all
+APP_MODE ?= local
 
 # runs the script which loads the containers of the application.
 up:
@@ -14,23 +14,25 @@ shell:
 	@docker exec -it restaurant_edible_app bash
 
 # builds server's http entry point.
-build_server:
+build-server:
 	@go build -o $(BIN_DIR)/ ./cmd/server
 
 # builds all the entry points of the application.
-build_all: build_server
+build-all: build-server
 
 # compiles proto files related to edible inventory.
-proto_inventory:
+proto-inventory:
 	@protoc --go_out=internal/protos/edible/inventory/ --go-grpc_out=require_unimplemented_servers=false:internal/protos/edible/inventory/ protos/edible/inventory/*.proto
 
 # compiles proto files related to edible recipe.
-proto_recipe:
+proto-recipe:
 	@protoc --go_out=internal/protos/edible/recipe/ --go-grpc_out=require_unimplemented_servers=false:internal/protos/edible/recipe/ protos/edible/recipe/*.proto
 
 # compiles proto files related to edible menu.
-proto_menu:
+proto-menu:
 	@protoc --go_out=internal/protos/edible/menu/ --go-grpc_out=require_unimplemented_servers=false:internal/protos/edible/menu/ protos/edible/menu/*.proto
 
 # compiles all proto files.
-proto_all: proto_menu proto_recipe proto_inventory
+proto-all: proto-menu proto-recipe proto-inventory
+
+.PHONY: up purge shell build-server build-all proto-inventory proto-recipe proto-menu proto-all
