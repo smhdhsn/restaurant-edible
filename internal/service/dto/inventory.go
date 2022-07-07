@@ -4,11 +4,11 @@ import (
 	"time"
 )
 
-// InventoryDTO represents inventory's data transfer object.
-type InventoryDTO struct {
+// Inventory represents inventory's data transfer object.
+type Inventory struct {
 	ID          uint32
 	ComponentID uint32
-	Component   ComponentDTO
+	Component   Component
 	Stock       uint32
 	ExpiresAt   time.Time
 	CreatedAt   time.Time

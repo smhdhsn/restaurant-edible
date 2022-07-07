@@ -1,9 +1,10 @@
 package service
 
 import (
+	"github.com/smhdhsn/restaurant-edible/internal/repository/entity"
+
 	repositoryContract "github.com/smhdhsn/restaurant-edible/internal/repository/contract"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
-	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // MenuServ contains repositories that will be used within this service.
@@ -17,6 +18,6 @@ func NewMenuService(fr repositoryContract.FoodRepository) serviceContract.MenuSe
 }
 
 // List is responsible for fetching available meals from database.
-func (s *MenuServ) List() ([]*dto.FoodDTO, error) {
+func (s *MenuServ) List() ([]*entity.Food, error) {
 	return s.fRepo.GetAvailable()
 }
