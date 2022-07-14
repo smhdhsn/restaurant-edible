@@ -6,11 +6,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/smhdhsn/restaurant-edible/internal/repository/entity"
-
 	log "github.com/smhdhsn/restaurant-edible/internal/logger"
 	menuProto "github.com/smhdhsn/restaurant-edible/internal/protos/edible/menu"
 	serviceContract "github.com/smhdhsn/restaurant-edible/internal/service/contract"
+	"github.com/smhdhsn/restaurant-edible/internal/service/dto"
 )
 
 // MenuHandler contains services that can be used within menu handler.
@@ -27,40 +26,38 @@ func NewMenuHandler(ms serviceContract.MenuService) menuProto.EdibleMenuServiceS
 
 // List is responsible for getting menu.
 func (s *MenuHandler) List(ctx context.Context, req *menuProto.MenuListRequest) (*menuProto.MenuListResponse, error) {
-	fListEntity, err := s.menuServ.List()
+	fListDTO, err := s.menuServ.List()
 	if err != nil {
 		log.Error(err)
 		return nil, status.Errorf(codes.Internal, "internal server error: %w", err)
 	}
 
-	resp := multipleFoodEntityToMenuResp(fListEntity)
+	resp := multipleFoodDTOToMenuResp(fListDTO)
 
 	return resp, nil
 }
 
-// multipleFoodEntityToMenuResp is responsible for transforming a list of food entity to a list of food response struct.
-func multipleFoodEntityToMenuResp(fListEntity []*entity.Food) *menuProto.MenuListResponse {
-	fListResp := make([]*menuProto.Food, len(fListEntity))
+// multipleFoodDTOToMenuResp is responsible for transforming a list of food dto to a list of food response struct.
+func multipleFoodDTOToMenuResp(fListDTO []*dto.Food) *menuProto.MenuListResponse {
+	fListResp := make([]*menuProto.Food, len(fListDTO))
 
-	for i, fEntity := range fListEntity {
-		cListResp := make([]*menuProto.Ingredient, len(fEntity.Components))
+	for i, fDTO := range fListDTO {
+		cListResp := make([]*menuProto.Ingredient, len(fDTO.Components))
 
-		for j, cEntity := range fEntity.Components {
+		for j, cDTO := range fDTO.Components {
 			cListResp[j] = &menuProto.Ingredient{
-				Title: cEntity.Title,
+				Title: cDTO.Title,
 			}
 		}
 
 		fListResp[i] = &menuProto.Food{
-			Id:          fEntity.ID,
-			Title:       fEntity.Title,
+			Id:          fDTO.ID,
+			Title:       fDTO.Title,
 			Ingredients: cListResp,
 		}
 	}
 
-	resp := &menuProto.MenuListResponse{
+	return &menuProto.MenuListResponse{
 		Foods: fListResp,
 	}
-
-	return resp
 }
